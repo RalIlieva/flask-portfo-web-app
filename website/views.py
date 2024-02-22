@@ -130,3 +130,12 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('views.blog_all_posts'))
+
+
+@views.route("/delete/comment/<int:comment_id>/<int:post_id>")
+@login_required
+def delete_comment(post_id, comment_id):
+    post_to_delete = db.get_or_404(Comments, comment_id)
+    db.session.delete(post_to_delete)
+    db.session.commit()
+    return redirect(url_for("views.show_post", post_id=post_id, current_user=current_user))
