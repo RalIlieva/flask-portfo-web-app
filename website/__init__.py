@@ -13,6 +13,7 @@ db = SQLAlchemy(model_class=Base)
 DB_NAME = 'website.db'
 
 
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "Shall_hide_it_as_environ"
@@ -40,7 +41,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return db.get_or_404(UserDB, user_id)
-
 
     return app
 

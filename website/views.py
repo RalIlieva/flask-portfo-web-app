@@ -5,6 +5,7 @@ from .models import Note, BlogPost, Comments
 from . import db
 import json
 from datetime import date
+# from flask_gravatar import Gravatar
 
 views = Blueprint('views', __name__)
 

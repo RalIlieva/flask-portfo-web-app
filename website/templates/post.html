@@ -5,7 +5,7 @@
 
 {% block body_content %}
 
-!-- Page Header-->
+<!-- Page Header-->
 <header class="masthead" style="background-image: url('{{post.img_url}}')">
   <div class="container position-relative px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -13,7 +13,7 @@
         <div class="post-heading">
           <h1>{{ post.title }}</h1>
           <h2 class="subheading">{{ post.subtitle }}</h2>
-          <a href="{{ url_for('views.show_post', post_id=post.id) }}" class="btn btn-primary">Read More &rarr;</a>
+          <a href="{{ url_for('views.show_post', post_id=post.id) }}"></a>
         </div>
         <div class="card-footer text-muted">
           <span class="meta"
@@ -53,9 +53,9 @@
           <ul class="commentList">
             {% for comment in post.comments: %}
             <li>
-              <div class="commenterImage">
+<!--              <div class="commenterImage">-->
                 <img src="{{ comment.comment_author.email }}" />
-              </div>
+<!--              </div>-->
               <div class="commentText">
                 {{ comment.text|safe }}
                 <span class="date sub-text">{{ comment.comment_author.name }}</span>

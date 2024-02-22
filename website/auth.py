@@ -19,7 +19,7 @@ def login():
         # If the email is not found, then asking the user to try again
         if not user:
             flash('That email does not exist, please try again.', category='error')
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
         #     Check if the stored hash password is the same entered hashed password
         elif not check_password_hash(user.password1, password):
             flash('Wrong password. Please try again.', category='error')
