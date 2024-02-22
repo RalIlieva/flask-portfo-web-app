@@ -13,6 +13,10 @@ class UserDB(db.Model, UserMixin):
 
     notes = relationship("Note", back_populates="user")
 
+    posts = relationship("BlogPost", back_populates="author")
+
+    comments = relationship("Comments", back_populates="comment_author")
+
 
 class Note(db.Model):
     __tablename__ = "note"
@@ -24,3 +28,38 @@ class Note(db.Model):
     user_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("user_db.id"))
     # Create reference to the User object. The "posts" refers to the posts property in the User class.
     user = relationship("UserDB", back_populates="notes")
+
+
+class BlogPost(db.Model):
+    __tablename__ = "blog_posts"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    # Create Foreign Key, "users.id" - referes to the tablename of USerDB
+    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("user_db.id"))
+    # Create reference to the User object. The "posts" refers to the posts property in the User class.
+    author = relationship("UserDB", back_populates="posts")
+
+    title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
+    subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
+    date: Mapped[str] = mapped_column(String(250), nullable=False)
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+    img_url: Mapped[str] = mapped_column(String(250), nullable=True)
+
+#     Parent BlogPost - Child Comments relationship
+    comments = relationship("Comments", back_populates="parent_post")
+
+
+class Comments(db.Model):
+    __tablename__ = "comments"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+#     Creating child relationship UserDB - Comments
+# "user_db.id" - refers to the tablename of UserDB class
+# "comments" refer to the comments property of the UserDB class
+    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("user_db.id"))
+    comment_author = relationship("UserDB", back_populates="comments")
+
+#     Creating child relationship BlogPost - Comments
+    post_id: Mapped[str] = mapped_column(Integer, db.ForeignKey("blog_posts.id"))
+    parent_post = relationship("BlogPost", back_populates="comments")
+    text: Mapped[str] = mapped_column(Text, nullable=False)

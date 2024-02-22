@@ -22,7 +22,7 @@
           {% if current_user.is_authenticated %}
         <li><a href="{{ url_for('views.myprofile') }}" class="nav-link px-2">My Profile</a></li>
         <li><a href="#" class="nav-link px-2">Features</a></li>
-        <li><a href="{{ url_for('views.blog') }}" class="nav-link px-2">Blog</a></li>
+        <li><a href="{{ url_for('views.blog_all_posts') }}" class="nav-link px-2">Blog</a></li>
 
       </ul>
      <div class="col-md-3 text-end">
