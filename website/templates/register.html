@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block body_content %}
+<div class="container">
+  <main class="form-signin w-100 m-auto">
+      <h2>Please register</h2>
+        <p>Using WTForms. Easier to style.</p>
+    <div class="form-floating">
+      <form method="POST" action="{{ url_for('auth.register') }}" >
+            {{ form.csrf_token }}
+            {{ form.name.label }} <br> {{ form.name(size=30) }} <br>
+            {{ form.email.label }}  <br> {{ form.email(size=30) }} <br>
+                    {% for err in form.email.errors %}
+                    <span style="color:red">{{ err }}</span>
+                    {% endfor %}
+            {{ form.password1.label }}  <br> {{ form.password1(size=30) }}<br>
+                    {% for err in form.password1.errors %}
+                    <span style="color:red">{{ err }}</span>
+                    {% endfor %}
+            {{ form.password2.label }}  <br> {{ form.password2(size=30) }}<br>
+                    {% for err in form.password2.errors %}
+                    <span style="color:red">{{ err }}</span>
+                    {% endfor %}
+            <br>
+            <button class="btn btn-primary" type="submit" value="Register">Register</button>
+          </br>
+        </form>
+    </div>
+  </main>
+</div>
+
+{% endblock %}

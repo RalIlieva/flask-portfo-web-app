@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %}My Profile{% endblock%}
+
+{% block body_content %}
+<div class="container">
+        <h1 align="center">Hello {{ current_user.name }}</h1>
+        <p>Lorem ipsum dolor sit amet,labore minima perspiciat</p>
+</div>
+
+<div class="container">
+        <h1 align="center">Notes</h1>
+                <ul class="list-group list-group-flush">
+                {% for note in current_user.notes %}
+                 <li class="list-group-item">
+                {{ note.data }}
+<!-- Add a delete option -->
+            <form method="POST" action="{{ url_for('views.delete_note', note_id=note.id) }}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+                {% endfor %}
+                </ul>
+        {{ render_form(form) }}
+</div>
+{% endblock %}
