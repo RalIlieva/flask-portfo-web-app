@@ -4,11 +4,8 @@
 {% block title %}Create Post{% endblock %}
 
 {% block body_content %}
-
-<header
-  class="masthead"
-  style="background-image: url('../static/images/edit-bg.jpg')"
->
+<div class="container">
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='images/edit-bg.jpg') }}')">
   <div class="container position-relative px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
@@ -26,6 +23,7 @@
     </div>
   </div>
 </header>
+</div>
 
 <main class="mb-4">
   <div class="container">
