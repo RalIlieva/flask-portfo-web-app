@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, flash, jsonify, redirect
 from flask_login import login_required, current_user
 from .forms import NoteForm, CreatePostForm, Comment
-from .models import Note, BlogPost, Comments
+from .models import Note, BlogPost, Comments, UserDB
 from . import db
 import json
 from datetime import date
@@ -19,7 +19,6 @@ def home():
 @login_required
 def myprofile():
     form = NoteForm()
-
     if form.validate_on_submit():
         data = form.note.data
 

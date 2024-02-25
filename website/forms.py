@@ -20,7 +20,7 @@ class LoginForm(FlaskForm):
 
 
 class NoteForm(FlaskForm):
-    note = StringField(label='Note', validators=[Length(min=10)])
+    note = StringField(label='New Note', validators=[Length(min=10)])
     submit = SubmitField(label='Add')
 
 
