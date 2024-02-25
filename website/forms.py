@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, EmailField, PasswordField
-from wtforms.validators import DataRequired, Email, Length, URL
+from wtforms.validators import DataRequired, Email, Length, URL, InputRequired, EqualTo
 from flask_ckeditor import CKEditorField
 
 
@@ -23,6 +23,11 @@ class EditProfileForm(FlaskForm):
     name = StringField(label='Name', validators=[DataRequired()])
     submit = SubmitField(label='Edit')
 
+
+class ChangePassword(FlaskForm):
+    password = PasswordField(label='New Password', validators=[InputRequired(), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField(label='Repeat Password')
+    submit = SubmitField(label='Change Password')
 
 class NoteForm(FlaskForm):
     note = StringField(label='New Note', validators=[Length(min=10)])
