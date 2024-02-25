@@ -24,7 +24,7 @@ def create_app():
 
     from .auth import auth
     from .views import views
-    from .forms import RegisterForm, LoginForm, NoteForm, CreatePostForm, Comment
+    from .forms import RegisterForm, LoginForm, NoteForm, CreatePostForm, Comment, EditProfileForm
 
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views, url_prefix='/')

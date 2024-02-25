@@ -19,6 +19,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Log Me', render_kw={"class": "btn btn-primary"})
 
 
+class EditProfileForm(FlaskForm):
+    name = StringField(label='Name', validators=[DataRequired()])
+    submit = SubmitField(label='Edit')
+
+
 class NoteForm(FlaskForm):
     note = StringField(label='New Note', validators=[Length(min=10)])
     submit = SubmitField(label='Add')

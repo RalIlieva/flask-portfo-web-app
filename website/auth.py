@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, EditProfileForm
 from .models import UserDB, Note
 from . import db
 
@@ -74,4 +74,25 @@ def register():
             return redirect(url_for('auth.login'))
     return render_template('register.html', form=form, current_user=current_user)
 
+
+@auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    pass
+
+
+@auth.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.name = form.name.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('auth.edit_profile'))
+    elif request.method == 'GET':
+        form.name.data = current_user.name
+    return render_template('edit_profile.html', form=form, current_user=current_user)
+
+    pass
 
