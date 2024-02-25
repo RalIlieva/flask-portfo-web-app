@@ -28,7 +28,7 @@ def login():
         #     = > good to go & log in
         else:
             login_user(user)
-            return redirect(url_for('views.myprofile'))
+            return redirect(url_for('views.myprofile', name=current_user.name))
 
     return render_template('login.html', form=form, current_user=current_user)
 
@@ -71,7 +71,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             flash('Successful registration!', category='success')
-            return redirect(url_for('views.myprofile'))
+            return redirect(url_for('auth.login'))
     return render_template('register.html', form=form, current_user=current_user)
 
 

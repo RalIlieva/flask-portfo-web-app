@@ -15,9 +15,14 @@ def home():
     return render_template('index.html', current_user=current_user)
 
 
-@views.route('/my-profile', methods=['GET', 'POST'])
+@views.route('/my-profile/<name>', methods=['GET', 'POST'])
 @login_required
-def myprofile():
+def myprofile(name):
+    user = UserDB.query.filter_by(name=name).first()
+    if not user:
+        # Handle case where user with given name doesn't exist
+        flash('User not found!', category='error')
+        return redirect(url_for('views.home'))
     form = NoteForm()
     if form.validate_on_submit():
         data = form.note.data
@@ -33,7 +38,7 @@ def myprofile():
         # Clear the form data after successful submission
         form.note.data = ''  # Reset the note field
 
-    return render_template('profile.html', form=form, current_user=current_user)
+    return render_template('profile.html', form=form, current_user=current_user, user=user)
 
 
 @views.route('/delete-note/<int:note_id>', methods=['POST'])
@@ -47,7 +52,7 @@ def delete_note(note_id):
         flash('Note deleted!', category='success')
     else:
         flash('You don\'t have permission to delete!', category='error')
-    return redirect(url_for('views.myprofile'))
+    return redirect(url_for('views.myprofile', name=current_user.name))
 
 
 # Blog
