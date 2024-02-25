@@ -94,7 +94,12 @@ def edit_profile():
 def change_password():
     form = ChangePassword()
     if form.validate_on_submit():
-        current_user.password1 = form.password.data
+        new_hashed_pass = generate_password_hash(
+            password=form.password.data,
+            method='pbkdf2:sha256',
+            salt_length=8,
+        )
+        current_user.password1 = new_hashed_pass
         db.session.commit()
         flash('Your new password has been saved.')
     elif request.method == 'GET':
