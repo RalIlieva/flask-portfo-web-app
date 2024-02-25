@@ -82,7 +82,7 @@ def edit_profile():
     if form.validate_on_submit():
         current_user.name = form.name.data
         db.session.commit()
-        flash('Your changes have been saved.')
+        flash('Your changes have been saved.', category='success')
         return redirect(url_for('auth.edit_profile'))
     elif request.method == 'GET':
         form.name.data = current_user.name
@@ -94,14 +94,17 @@ def edit_profile():
 def change_password():
     form = ChangePassword()
     if form.validate_on_submit():
-        new_hashed_pass = generate_password_hash(
-            password=form.password.data,
-            method='pbkdf2:sha256',
-            salt_length=8,
-        )
-        current_user.password1 = new_hashed_pass
-        db.session.commit()
-        flash('Your new password has been saved.')
+        if check_password_hash(current_user.password1, form.password1.data):
+            new_hashed_pass = generate_password_hash(
+                password=form.password.data,
+                method='pbkdf2:sha256',
+                salt_length=8,
+            )
+            current_user.password1 = new_hashed_pass
+            db.session.commit()
+            flash('Your new password has been saved.')
+        else:
+            flash('Your old password is not correct', category='error')
     elif request.method == 'GET':
         form.password.data = current_user.password1
     return render_template('change_password.html', form=form, current_user=current_user)
