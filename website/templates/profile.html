@@ -34,6 +34,17 @@
                 </ul>
             {{ render_form(form) }}
         </div>
+         <div class="col-4">
+            <h1 align="çenter">My Posts & Comments</h1>
+            {% if current_user.is_authenticated %}
+                {% for post in posts %}
+                <div><p>Post:{{ post.author.name }} says: <b>{{ post.title }}</b></p></div>
+                {% endfor %}
+                {% for comment in comments %}
+                <div><p>Comments:{{ comment.comment_author.name }} says: <b>{{ comment.text | safe }}</b></p></div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

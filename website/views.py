@@ -38,7 +38,10 @@ def myprofile(name):
         # Clear the form data after successful submission
         form.note.data = ''  # Reset the note field
 
-    return render_template('profile.html', form=form, current_user=current_user, user=user)
+    posts = current_user.posts # Get all posts for the current user
+    comments = current_user.comments
+
+    return render_template('profile.html', form=form, current_user=current_user, user=user, posts=posts, comments=comments)
 
 
 @views.route('/delete-note/<int:note_id>', methods=['POST'])
