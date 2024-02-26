@@ -10,6 +10,7 @@ class UserDB(db.Model, UserMixin):
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     password1: Mapped[str] = mapped_column(String(100), nullable=False)
+    is_deleted: Mapped[bool] = mapped_column(db.Boolean, default=False)  # New field
 
     notes = relationship("Note", back_populates="user")
 

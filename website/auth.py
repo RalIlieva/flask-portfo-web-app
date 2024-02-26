@@ -24,6 +24,9 @@ def login():
         elif not check_password_hash(user.password1, password):
             flash('Wrong password. Please try again.', category='error')
             return redirect(url_for('auth.login'))
+        elif user.is_deleted:  # Check if user is deleted
+            flash('This account has been deleted. Please contact support.', category='error')
+            return redirect(url_for('auth.logout'))  # Log out the deleted user
         #   If all checks are ok, then email = email in the database, the hashed pass = hashed pass in the database
         #     = > good to go & log in
         else:
