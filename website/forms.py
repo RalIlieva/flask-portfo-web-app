@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, EmailField, PasswordField
-from wtforms.validators import DataRequired, Email, Length, URL, InputRequired, EqualTo
+from wtforms.validators import DataRequired, Email, Length, URL, InputRequired, EqualTo, ValidationError
 from flask_ckeditor import CKEditorField
+from . import db
+from .models import UserDB
 
 
 class RegisterForm(FlaskForm):
@@ -22,6 +24,17 @@ class LoginForm(FlaskForm):
 class EditProfileForm(FlaskForm):
     name = StringField(label='Name', validators=[DataRequired()])
     submit = SubmitField(label='Edit')
+
+    def __init__(self, original_name, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.original_name = original_name
+
+    def validate_name(self, name):
+        if name.data != self.original_name:
+            user = db.session.scalar((db.select(UserDB).where(UserDB.name == self.name.data)))
+            #Also working - user = UserDB.query.filter_by(name=name.data).first()
+            if user is not None:
+                raise ValidationError('This username is already taken. Please choose a different name')
 
 
 class ChangePassword(FlaskForm):

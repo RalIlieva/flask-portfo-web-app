@@ -9,7 +9,7 @@ from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 # from flask_gravatar import Gravatar
 
-
+#A must to avoid problems with migrations, esp. contraints and connames
 metadata = MetaData(naming_convention={
     "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
