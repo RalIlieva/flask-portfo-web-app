@@ -1,14 +1,25 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
+from flask_migrate import Migrate
 from os import path
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 # from flask_gravatar import Gravatar
 
+
+metadata = MetaData(naming_convention={
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+})
+
 class Base(DeclarativeBase):
-    pass
+    metadata=metadata
 db = SQLAlchemy(model_class=Base)
 DB_NAME = 'website.db'
 
@@ -21,6 +32,7 @@ def create_app():
     ckeditor = CKEditor(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     from .auth import auth
     from .views import views
