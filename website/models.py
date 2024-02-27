@@ -8,7 +8,7 @@ class UserDB(db.Model, UserMixin):
     __tablename__ = "user_db"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password1: Mapped[str] = mapped_column(String(100), nullable=False)
     is_deleted: Mapped[bool] = mapped_column(db.Boolean, default=False)  # New field
 
