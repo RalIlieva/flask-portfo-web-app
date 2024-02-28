@@ -3,6 +3,7 @@ from flask_login import UserMixin, login_user, LoginManager, current_user, logou
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, DateTime
 from sqlalchemy.sql import func
+from hashlib import md5
 
 class UserDB(db.Model, UserMixin):
     __tablename__ = "user_db"
@@ -17,6 +18,10 @@ class UserDB(db.Model, UserMixin):
     posts = relationship("BlogPost", back_populates="author")
 
     comments = relationship("Comments", back_populates="comment_author")
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
 
 class Note(db.Model):

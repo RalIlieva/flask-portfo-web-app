@@ -4,8 +4,11 @@
 
 {% block body_content %}
 <div class="container">
+    <table>
+        <td><img src="{{ current_user.avatar(128) }}"></td>
         <h1 align="center">Hello {{ current_user.name }}</h1>
         <p>Lorem ipsum dolor sit amet,labore minima perspiciat</p>
+    </table>    
 </div>
 
 <div class="container">
@@ -38,11 +41,21 @@
             <h1 align="çenter">My Posts & Comments</h1>
             {% if current_user.is_authenticated %}
                 {% for post in posts %}
-                <div><p>Post:{{ post.author.name }} says: <b>{{ post.title }}</b></p></div>
+                <table>
+                    <tr valign="top">
+                        <td><img src="{{ current_user.avatar(36) }}"></td>
+                        <div><td>Post:{{ post.author.name }} says: <b>{{ post.title }}</b></td></div>
+                    </tr>
+                </table>
                 {% endfor %}
-                {% for comment in comments %}
-                <div><p>Comments:{{ comment.comment_author.name }} says: <b>{{ comment.text | safe }}</b></p></div>
-                {% endfor %}
+             {% for comment in comments %}
+                 <table>
+                    <tr valign="top">
+                        <td><img src="{{ current_user.avatar(36) }}"></td>
+                        <div><td>Comments:{{ comment.comment_author.name }} says: <b>{{ comment.text | safe }}</b></td></div>
+                    </tr>
+                 </table>
+             {% endfor %}
             {% endif %}
         </div>
     </div>
