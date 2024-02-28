@@ -3,10 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
 from flask_migrate import Migrate
+import os
 from os import path
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
+import logging
+from logging.handlers import RotatingFileHandler
 # from flask_gravatar import Gravatar
 
 #A must to avoid problems with migrations, esp. contraints and connames
@@ -63,6 +66,17 @@ def create_app():
     def internal_error(error):
         db.session.rollback()
         return render_template('500.html'), 500
+
+        # Logging to a file setup
+    if not app.debug:
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler('logs/website.log', maxBytes=10240, backupCount=10)
+        file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('Website startup')
 
     return app
 
