@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
@@ -38,6 +38,7 @@ def create_app():
     from .views import views
     from .forms import RegisterForm, LoginForm, NoteForm, CreatePostForm, Comment, EditProfileForm, ChangePassword
 
+
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views, url_prefix='/')
 
@@ -53,6 +54,15 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return db.get_or_404(UserDB, user_id)
+
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return render_template('404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        db.session.rollback()
+        return render_template('500.html'), 500
 
     return app
 
