@@ -4,6 +4,8 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, DateTime
 from sqlalchemy.sql import func
 from hashlib import md5
+from typing import Optional
+from datetime import datetime, timezone
 
 class UserDB(db.Model, UserMixin):
     __tablename__ = "user_db"
@@ -12,6 +14,8 @@ class UserDB(db.Model, UserMixin):
     name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password1: Mapped[str] = mapped_column(String(100), nullable=False)
     is_deleted: Mapped[bool] = mapped_column(db.Boolean, default=False)  # New field
+    about_me: Mapped[Optional[str]] = mapped_column(String(150))
+    last_seen: Mapped[Optional[datetime]] = mapped_column(default=lambda: datetime.now(timezone.utc))
 
     notes = relationship("Note", back_populates="user")
 

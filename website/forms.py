@@ -23,6 +23,7 @@ class LoginForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     name = StringField(label='Name', validators=[DataRequired()])
+    about_me = StringField(label="About Me", validators=[Length(min=0, max=150)])
     submit = SubmitField(label='Edit')
 
     def __init__(self, original_name, *args, **kwargs):

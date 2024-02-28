@@ -2,10 +2,20 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from .forms import RegisterForm, LoginForm, EditProfileForm, ChangePassword
-from .models import UserDB, Note
+from .models import UserDB
 from . import db
+from datetime import datetime, timezone
 
 auth = Blueprint('auth', __name__)
+
+
+@auth.before_request
+def before_request():
+    if current_user.is_authenticated:
+        if current_user.is_authenticated:
+            current_user.last_seen = datetime.now(timezone.utc)
+            db.session.commit()
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -84,11 +94,13 @@ def edit_profile():
     form = EditProfileForm(current_user.name)
     if form.validate_on_submit():
         current_user.name = form.name.data
+        current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Your changes have been saved.', category='success')
         return redirect(url_for('auth.edit_profile'))
     elif request.method == 'GET':
         form.name.data = current_user.name
+        current_user.about_me = form.about_me.data
     return render_template('edit_profile.html', form=form, current_user=current_user)
 
 
