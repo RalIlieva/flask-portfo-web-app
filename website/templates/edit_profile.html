@@ -9,7 +9,7 @@
              <main class="form-signin">
                 <h2 class="h3 mb-3 fw-normal text-center">Edit your profile</h2>
                 <p>Using bootstrap-WTForms. Learning how to style.</p>
-                    {{ render_form(form, button_style='warning w-100 btn btn-lg') }}
+                    {{ render_form(form, button_style='btn btn-outline-primary w-100 btn btn-lg') }}
              </main> <br>
         <div class="col-md-6">
             <a href="{{ url_for('views.myprofile', name=current_user.name) }}" class="btn btn-primary">Back</a>

@@ -34,7 +34,7 @@
 <!-- Add a delete option -->
                 <form method="POST" action="{{ url_for('views.delete_note', note_id=note.id) }}">
                     <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-outline-primary">Delete</button>
                 </form></li>
                         {% endfor %}
                 </ul>

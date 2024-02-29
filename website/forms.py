@@ -18,7 +18,7 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[Email(allow_empty_local=False)])
     password = PasswordField(label='Password', validators=[Length(min=8)])
-    submit = SubmitField(label='Log Me', render_kw={"class": "btn btn-primary"})
+    submit = SubmitField(label='Log Me')
 
 
 class EditProfileForm(FlaskForm):
