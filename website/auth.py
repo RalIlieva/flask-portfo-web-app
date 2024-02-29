@@ -100,7 +100,7 @@ def edit_profile():
         return redirect(url_for('auth.edit_profile'))
     elif request.method == 'GET':
         form.name.data = current_user.name
-        current_user.about_me = form.about_me.data
+        form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form, current_user=current_user)
 
 
