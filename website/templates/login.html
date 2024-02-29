@@ -4,12 +4,13 @@
 
 {% block body_content %}
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-      <h2>Please Sign in</h2>
-    <p>Using bootstrap-WTForms. Learning how to style.</p>
-        {{ render_form(form, button_style='warning') }}
-
+    <div class="row justify-content-md-center">
+        <div class="col-md-6">
+            <main class="form-signin">
+                <h2 class="h3 mb-3 fw-normal text-center">Please Sign in</h2>
+                <p class="text-center">Using bootstrap-WTForms. Learning how to style.</p>
+                    {{ render_form(form, button_style='warning w-100 btn btn-lg') }}
+            </main>
         </div>
     </div>
 </div>

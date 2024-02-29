@@ -5,13 +5,18 @@
 {% block body_content %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
-         <ul class="list-group list-group-flush">
-        <h2>Edit your profile</h2>
-    <p>Using bootstrap-WTForms. Learning how to style.</p>
-        <li class="list-group-item d-flex justify-content-between align-items-end">
-        <span>{{ render_form(form, button_style='warning') }}</span>
-        <a href="{{ url_for('views.myprofile', name=current_user.name) }}" class="btn btn-primary">Back</a>
+        <div class="col-sm-8">
+         <ul class="list-group">
+            <h2>Edit your profile</h2>
+                <p>Using bootstrap-WTForms. Learning how to style.</p>
+                <li class="list-group-item d-flex justify-content-between align-items-end">
+                    <div class="col-md-9">
+                {{ render_form(form, button_style='warning') }}
+                    </div>
+                    <div class="col-md-3">
+                   <span><a href="{{ url_for('views.myprofile', name=current_user.name) }}" class="btn btn-primary">Back</a></span>
+                </div>
+            </li></ul>
         </div>
     </div>
 </div>
