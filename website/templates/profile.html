@@ -5,62 +5,64 @@
 {% block body_content %}
 <div class="container">
     <table>
-        <td><img src="{{ current_user.avatar(128) }}"></td>
         <h1 align="center">Hello {{ current_user.name }}</h1>
         <p>Lorem ipsum dolor sit amet,labore minima perspiciat</p>
-    </table>    
+    </table>
 </div>
 
 <div class="container">
-    <div class="row">
-        <div class="col-4">
-            <h1 align="çenter">My Profile</h1>
-               <p>Name: {{ current_user.name }}</p>
-                <p>Email: {{ current_user.email }}</p>
-            {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-            {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p> {% endif %}
-
+    <hr class="featurette-divider">
+    <div class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading fw-normal lh-1">My Profile</h2>
+            <p class="lead">Name: {{ current_user.name }}</p>
+            <p class="lead">Email: {{ current_user.email }}</p>
+            {% if user.about_me %}<p class="lead">{{ user.about_me }}</p>{% endif %}
+            {% if user.last_seen %}<p class="lead">Last seen on: {{ user.last_seen }}</p> {% endif %}
             {% if current_user.is_authenticated %}
                 <p> <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-primary"> Edit Your Profile</a> </p>
                 <p> <a href="{{ url_for('auth.change_password') }}" class="btn btn-primary"> Change Your Password</a> </p>
             {% endif %}
         </div>
-        <div class="col-sm-4">
-            <h1 align="center">Notes</h1>
-                <ul class="list-group list-group-flush">
-                {% for note in current_user.notes %}
-                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                   <span>{{ note.data }}</span>
-<!-- Add a delete option -->
-                <form method="POST" action="{{ url_for('views.delete_note', note_id=note.id) }}">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-outline-primary">Delete</button>
-                </form></li>
-                        {% endfor %}
-                </ul>
-            {{ render_form(form) }}
-        </div>
-         <div class="col-4">
-            <h1 align="çenter">My Posts & Comments</h1>
-            {% if current_user.is_authenticated %}
-                {% for post in posts %}
-                <table>
-                    <tr valign="top">
-                        <td><img src="{{ current_user.avatar(36) }}"></td>
-                        <div><td>Post:{{ post.author.name }} says: <b>{{ post.title }}</b></td></div>
-                    </tr>
-                </table>
-                {% endfor %}
-             {% for comment in comments %}
-                 <table>
-                    <tr valign="top">
-                        <td><img src="{{ current_user.avatar(36) }}"></td>
-                        <div><td>Comments:{{ comment.comment_author.name }} says: <b>{{ comment.text | safe }}</b></td></div>
-                    </tr>
-                 </table>
-             {% endfor %}
-            {% endif %}
+        <div class="col-md-5">
+            <img src="{{ current_user.avatar(128) }}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="150" height="150" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false" alt="My profile avatar">
         </div>
     </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading fw-normal lh-1">My Posts & Comments</h2>
+            {% if current_user.is_authenticated %}
+                {% for post in posts %}
+                       {% include '_post.html' %}
+                {% endfor %}
+                {% for comment in comments %}
+                        {% include '_comments.html'  %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-5 order-md-1">
+            <!-- Content for the second column -->
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row">
+        <div class="col-md-7">
+            <h2 class="featurette-heading fw-normal lh-1">My Notes</h2>
+            {% include '_notes.html' %}
+                {{ render_form(form) }}
+        </div>
+    </div>
+    <hr class="featurette-divider">
+    <footer class="container">
+        <p class="float-end">
+            <a href="#">Back to top</a>
+        </p>
+    </footer>
+
 </div>
 {% endblock %}
