@@ -1,3 +1,11 @@
+* {
+    box-sizing:border-box;
+}
+
+.marketing .col-lg-4 {
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
 
 
 header.masthead {
