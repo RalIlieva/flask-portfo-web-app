@@ -49,11 +49,30 @@
             <p class="lead">Email: {{ user.email }}</p>
             {% if user.about_me %}<p class="lead">{{ user.about_me }}</p>{% endif %}
             {% if user.last_seen %}<p class="lead">Last seen on: {{ user.last_seen }}</p> {% endif %}
+            <p>{{ user.followers_count() }} followers, {{ user.following_count() }} following.</p>
             {% if user == current_user %}
                 <p> <a href="{{ url_for('auth.edit_profile') }}" class="btn btn-primary"> Edit Your Profile</a> </p>
                 <p> <a href="{{ url_for('auth.change_password') }}" class="btn btn-outline-primary"> Change Your Password</a> </p>
+
+            {% elif not current_user.is_following(user) %}
+            <p>
+                <form action="{{ url_for('views.follow', name=user.name) }}" method="post">
+                {{ followform.hidden_tag() }}
+                {{ followform.submit(value="Follow") }}
+                </form>
+            </p>
+            {% else %}
+            <p>
+                <form action="{{ url_for('views.unfollow', name=user.name) }}" method="post">
+                {{ followform.hidden_tag() }}
+                {{ followform.submit(value="Unfollow") }}
+                </form>
+            </p>
             {% endif %}
         </div>
+
+
+
         <div class="col-md-5">
             <img src="{{ user.avatar(128) }}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="150" height="150" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false" alt="My profile avatar">
         </div>

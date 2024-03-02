@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, url_for, flash, jsonify, redirect
 from flask_login import login_required, current_user
-from .forms import NoteForm, CreatePostForm, Comment
+from .forms import NoteForm, CreatePostForm, Comment, EmptyForm
 from .models import Note, BlogPost, Comments, UserDB
 from . import db
 import json
@@ -41,7 +41,10 @@ def myprofile(name):
     posts = user.posts
     comments = user.comments
 
-    return render_template('profile.html', form=form, current_user=current_user, user=user, posts=posts, comments=comments)
+    followform = EmptyForm()
+
+    return render_template('profile.html', form=form, current_user=current_user,
+                           user=user, posts=posts, comments=comments, followform=followform)
 
 
 @views.route('/delete-note/<int:note_id>', methods=['POST'])
@@ -147,3 +150,45 @@ def delete_comment(post_id, comment_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for("views.show_post", post_id=post_id, current_user=current_user))
+
+
+@views.route('/follow/<name>', methods=['POST'])
+@login_required
+def follow(name):
+    followform = EmptyForm()
+    if followform.validate_on_submit():
+        user = db.session.scalar(
+            db.select(UserDB).where(UserDB.name == name))
+        if user is None:
+            flash(f'User {name} not found.')
+            return redirect(url_for('views.blog_all_posts'))
+        if user == current_user:
+            flash('You cannot follow yourself!')
+            return redirect(url_for('views.myprofile', name=name))
+        current_user.follow(user)
+        db.session.commit()
+        flash(f'You are following {name}!')
+        return redirect(url_for('views.myprofile', name=name))
+    else:
+        return redirect(url_for('views.blog_all_posts'))
+
+
+@views.route('/unfollow/<name>', methods=['POST'])
+@login_required
+def unfollow(name):
+    followform = EmptyForm()
+    if followform.validate_on_submit():
+        user = db.session.scalar(
+            db.select(UserDB).where(UserDB.name == name))
+        if user is None:
+            flash(f'User {name} not found.')
+            return redirect(url_for('views.blog_all_posts'))
+        if user == current_user:
+            flash('You cannot unfollow yourself!')
+            return redirect(url_for('views.myprofile', name=name))
+        current_user.unfollow(user)
+        db.session.commit()
+        flash(f'You are not following {name}.')
+        return redirect(url_for('views.myprofile', name=name))
+    else:
+        return redirect(url_for('views.blog_all_posts'))

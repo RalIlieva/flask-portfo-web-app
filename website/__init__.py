@@ -41,7 +41,7 @@ def create_app():
 
     from .auth import auth
     from .views import views
-    from .forms import RegisterForm, LoginForm, NoteForm, CreatePostForm, Comment, EditProfileForm, ChangePassword
+    from .forms import RegisterForm, LoginForm, NoteForm, CreatePostForm, Comment, EditProfileForm, ChangePassword, EmptyForm
 
 
     app.register_blueprint(auth, url_prefix='/')

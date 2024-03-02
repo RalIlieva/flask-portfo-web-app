@@ -60,3 +60,7 @@ class CreatePostForm(FlaskForm):
 class Comment(FlaskForm):
     comment_text = CKEditorField(label="Comment", validators=[DataRequired()])
     submit = SubmitField(label="Submit Comment")
+
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
