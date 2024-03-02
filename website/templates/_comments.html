@@ -1,12 +1,12 @@
 <table class="table table-hover">
   <tr>
     <td width="36px">
-      <a href="{{ url_for('views.myprofile', name=current_user.name) }}">
+      <a href="{{ url_for('views.myprofile', name=user.name) }}">
           <img src="{{ comment.comment_author.avatar(36) }}">
       </a>
     </td>
     <td>
-      <a href="{{ url_for('views.myprofile', name=current_user.name) }}">
+      <a href="{{ url_for('views.myprofile', name=user.name) }}">
         {{ comment.comment_author.name }}
       </a>
       comments:

@@ -20,7 +20,7 @@
           <span class="meta"
             >Posted by
 <!--            Changed from pos.author-->
-            <a href="#">{{ post.author.name }}</a>
+            <a href="{{ url_for('views.myprofile', name=post.author.name) }}">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
         </div>
