@@ -80,7 +80,7 @@ class UserDB(db.Model, UserMixin):
                 Author.id == self.id,
             ))
             .group_by(BlogPost)
-            .order_by(BlogPost.timestamp.desc())
+            .order_by(BlogPost.date.desc())
         )
 
 

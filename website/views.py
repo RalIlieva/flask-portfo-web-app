@@ -38,7 +38,8 @@ def myprofile(name):
         # Clear the form data after successful submission
         form.note.data = ''  # Reset the note field
 
-    posts = user.posts
+    # posts = user.posts
+    posts = db.session.scalars(current_user.following_posts()).all()
     comments = user.comments
 
     followform = EmptyForm()
