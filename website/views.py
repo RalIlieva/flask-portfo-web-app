@@ -15,7 +15,7 @@ def home():
     return render_template('index.html', current_user=current_user)
 
 
-@views.route('/my-profile/<name>', methods=['GET', 'POST'])
+@views.route('/profile/<name>', methods=['GET', 'POST'])
 @login_required
 def myprofile(name):
     user = UserDB.query.filter_by(name=name).first()
@@ -87,7 +87,7 @@ def show_post(post_id):
 
         db.session.add(new_comment)
         db.session.commit()
-        return redirect(url_for("views.blog_all_posts"))
+        return redirect(url_for("views.show_post", post_id=requested_post.id))
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 

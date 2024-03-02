@@ -22,7 +22,7 @@
         <p class="post-meta">
           Posted by
 <!--          Previously it was {{ post.author }}, now post.user is UserDB Object-->
-          <a href="#">{{post.author.name}}</a>
+          <a href="{{ url_for('views.myprofile', name=post.author.name) }}">{{post.author.name}}</a>
           on {{post.date}}
           <!-- Only show delete button if user is logged in) -->
           {% if current_user.is_authenticated and post.author_id == current_user.id %}

@@ -7,7 +7,62 @@
     text-align: center;
 }
 
+/*Comment area */
+.comment {
+  margin-top: 20px;
+}
 
+.commentList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.commentItem {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.commentHeader {
+  margin-right: 10px;
+}
+
+.commentHeader img {
+  width: 36px;
+  height: 36px;
+  border-radius: 5%;
+}
+
+.commentContent {
+  flex-grow: 1;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+}
+
+.authorName {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.commentText {
+  margin-top: 5px; /* Adjust as needed */
+}
+
+.deleteCommentBtn {
+  color: red;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.deleteCommentBtn:hover {
+  text-decoration: underline;
+}
+
+
+/* Posts */
 header.masthead {
   position: relative;
   margin-bottom: 3rem;
