@@ -38,8 +38,12 @@ def myprofile(name):
         # Clear the form data after successful submission
         form.note.data = ''  # Reset the note field
 
-    # posts = user.posts
-    posts = db.session.scalars(current_user.following_posts()).all()
+    # Show all own and following posts on my profile.
+    # When viewing other profile - show only the posts of the user
+    if user == current_user:
+        posts = db.session.scalars(current_user.following_posts()).all()
+    else:
+        posts = user.posts
     comments = user.comments
 
     followform = EmptyForm()
