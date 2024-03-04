@@ -40,16 +40,44 @@ def myprofile(name):
 
     # Show all own and following posts on my profile.
     # When viewing other profile - show only the posts of the user
+    page = request.args.get('page', 1, type=int)
+    # if user == current_user:
+    #     posts = db.session.scalars(current_user.following_posts()).all()
+    # else:
+    #     posts = user.posts
+    #
+    # comments = user.comments
+    #
+    # followform = EmptyForm()
+    #
+    # return render_template('profile.html', form=form, current_user=current_user,
+    #                        user=user, posts=posts, comments=comments, followform=followform)
+
+    page = request.args.get('page', 1, type=int)
     if user == current_user:
-        posts = db.session.scalars(current_user.following_posts()).all()
+        query_posts = current_user.following_posts()
     else:
-        posts = user.posts
-    comments = user.comments
+        query_posts = user.posts
+
+    posts = db.paginate(query_posts, page=page, per_page=3, error_out=False)
+
+    next_url = url_for('views.myprofile', name=user.name, page=posts.next_num)\
+        if posts.has_next else None
+    prev_url = url_for('views.myprofile', name=user.name, page=posts.prev_num)\
+        if posts.has_prev else None
+
+    query_comments = Comments.query.filter_by(author_id=user.id)
+    comments = db.paginate(query_comments, page=page, max_per_page=4, error_out=False)
+    next_url = url_for('views.myprofile', name=user.name, page=comments.next_num)\
+        if posts.has_next else None
+    prev_url = url_for('views.myprofile',name=user.name, page=comments.prev_num)\
+        if posts.has_prev else None
 
     followform = EmptyForm()
 
     return render_template('profile.html', form=form, current_user=current_user,
-                           user=user, posts=posts, comments=comments, followform=followform)
+                           user=user, posts=posts, comments=comments, followform=followform,
+                           next_url=next_url, prev_url=prev_url)
 
 
 @views.route('/delete-note/<int:note_id>', methods=['POST'])

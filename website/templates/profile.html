@@ -89,6 +89,13 @@
                 {% for comment in comments %}
                         {% include '_comments.html'  %}
                 {% endfor %}
+        {% if prev_url %}
+            <a href="{{ prev_url }}">Newer</a>
+        {% endif %}
+        {% if next_url %}
+            <a href="{{ next_url }}">Older</a>
+        {% endif %}
+
         </div>
         <div class="col-md-5 order-md-1">
             <!-- Content for the second column -->
