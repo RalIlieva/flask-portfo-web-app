@@ -5,7 +5,7 @@ from .models import Note, BlogPost, Comments, UserDB
 from . import db
 import json
 from datetime import date
-# from flask_gravatar import Gravatar
+
 
 views = Blueprint('views', __name__)
 
@@ -70,9 +70,18 @@ def delete_note(note_id):
 @views.route('/blog', methods=['GET', 'POST'])
 @login_required
 def blog_all_posts():
-    result = db.session.execute(db.select(BlogPost))
-    posts = result.scalars().all()
-    return render_template("blog.html", all_posts=posts, current_user=current_user)
+    page = request.args.get('page', 1, type=int)
+    query = db.select(BlogPost).order_by(BlogPost.date.desc())
+    posts = db.paginate(query, page=page, per_page=2, error_out=False)
+    next_url = url_for('views.blog_all_posts', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('views.blog_all_posts', page=posts.prev_num) \
+        if posts.has_prev else None
+
+    # result = db.session.execute(db.select(BlogPost))
+    # posts = result.scalars().all()
+    return render_template("blog.html", all_posts=posts.items, current_user=current_user,
+                           next_url=next_url, prev_url=prev_url)
 
 
 @views.route('/blog/<int:post_id>', methods=["GET", "POST"])

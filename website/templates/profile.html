@@ -58,14 +58,14 @@
             <p>
                 <form action="{{ url_for('views.follow', name=user.name) }}" method="post">
                 {{ followform.hidden_tag() }}
-                {{ followform.submit(value="Follow") }}
+                {{ followform.submit(value="Follow", class="btn btn-primary") }}
                 </form>
             </p>
             {% else %}
             <p>
                 <form action="{{ url_for('views.unfollow', name=user.name) }}" method="post">
                 {{ followform.hidden_tag() }}
-                {{ followform.submit(value="Unfollow") }}
+                {{ followform.submit(value="Unfollow", class="btn btn-secondary") }}
                 </form>
             </p>
             {% endif %}
