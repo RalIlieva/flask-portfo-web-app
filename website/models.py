@@ -29,7 +29,7 @@ class UserDB(db.Model, UserMixin):
 
     notes = relationship("Note", back_populates="user")
 
-    posts = relationship("BlogPost", back_populates="author")
+    posts: WriteOnlyMapped['BlogPost'] = relationship("BlogPost", back_populates="author")
 
     comments = relationship("Comments", back_populates="comment_author")
 
