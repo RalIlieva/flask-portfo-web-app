@@ -41,6 +41,41 @@ def myprofile(name):
     # Show all own and following posts on my profile.
     # When viewing other profile - show only the posts of the user
     page = request.args.get('page', 1, type=int)
+    posts = user.posts
+    # query_posts = user.posts
+    # posts = query_posts.paginate(page=page, per_page=3, error_out=False)
+    # next_url = url_for('views.myprofile', name=user.name, page=posts.next_num) \
+    #         if posts.has_next else None
+    # prev_url = url_for('views.myprofile', name=user.name, page=posts.prev_num)\
+    #     if posts.has_prev else None
+
+    query_comments = Comments.query.filter_by(author_id=user.id)
+    comments = db.paginate(query_comments, page=page, max_per_page=4, error_out=False)
+    next_url = url_for('views.myprofile', name=user.name, page=comments.next_num)\
+        if comments.has_next else None
+    prev_url = url_for('views.myprofile',name=user.name, page=comments.prev_num)\
+        if comments.has_prev else None
+
+    followform = EmptyForm()
+
+    return render_template('profile.html', form=form, current_user=current_user,
+                           user=user, posts=posts, comments=comments, followform=followform,
+                           next_url=next_url, prev_url=prev_url)
+
+    # Version 1
+    # posts = user.posts
+    #
+    # comments = user.comments
+    #
+    # followform = EmptyForm()
+    #
+    # return render_template('profile.html', form=form, current_user=current_user,
+    #                        user=user, posts=posts, comments=comments, followform=followform)
+
+    # Version 2
+    # Show all own and following posts on my profile.
+    # When viewing other profile - show only the posts of the user
+    # page = request.args.get('page', 1, type=int)
     # if user == current_user:
     #     posts = db.session.scalars(current_user.following_posts()).all()
     # else:
@@ -53,31 +88,33 @@ def myprofile(name):
     # return render_template('profile.html', form=form, current_user=current_user,
     #                        user=user, posts=posts, comments=comments, followform=followform)
 
-    page = request.args.get('page', 1, type=int)
-    if user == current_user:
-        query_posts = current_user.following_posts()
-    else:
-        query_posts = user.posts
 
-    posts = db.paginate(query_posts, page=page, per_page=3, error_out=False)
+    # Version 3
+    # page = request.args.get('page', 1, type=int)
+    # if user == current_user:
+    #     query_posts = current_user.following_posts()
+    # else:
+    #     query_posts = user.posts
+    #
+    # posts = db.paginate(query_posts, page=page, per_page=3, error_out=False)
+    #
+    # next_url = url_for('views.myprofile', name=user.name, page=posts.next_num)\
+    #     if posts.has_next else None
+    # prev_url = url_for('views.myprofile', name=user.name, page=posts.prev_num)\
+    #     if posts.has_prev else None
+    #
+    # query_comments = Comments.query.filter_by(author_id=user.id)
+    # comments = db.paginate(query_comments, page=page, max_per_page=4, error_out=False)
+    # next_url = url_for('views.myprofile', name=user.name, page=comments.next_num)\
+    #     if posts.has_next else None
+    # prev_url = url_for('views.myprofile',name=user.name, page=comments.prev_num)\
+    #     if posts.has_prev else None
 
-    next_url = url_for('views.myprofile', name=user.name, page=posts.next_num)\
-        if posts.has_next else None
-    prev_url = url_for('views.myprofile', name=user.name, page=posts.prev_num)\
-        if posts.has_prev else None
-
-    query_comments = Comments.query.filter_by(author_id=user.id)
-    comments = db.paginate(query_comments, page=page, max_per_page=4, error_out=False)
-    next_url = url_for('views.myprofile', name=user.name, page=comments.next_num)\
-        if posts.has_next else None
-    prev_url = url_for('views.myprofile',name=user.name, page=comments.prev_num)\
-        if posts.has_prev else None
-
-    followform = EmptyForm()
-
-    return render_template('profile.html', form=form, current_user=current_user,
-                           user=user, posts=posts, comments=comments, followform=followform,
-                           next_url=next_url, prev_url=prev_url)
+    # followform = EmptyForm()
+    #
+    # return render_template('profile.html', form=form, current_user=current_user,
+    #                        user=user, posts=posts, comments=comments, followform=followform)
+                           # next_url=next_url, prev_url=prev_url)
 
 
 @views.route('/delete-note/<int:note_id>', methods=['POST'])
@@ -94,22 +131,30 @@ def delete_note(note_id):
     return redirect(url_for('views.myprofile', name=current_user.name))
 
 
+@views.route('/explore')
+@login_required
+def explore():
+    page = request.args.get('page', 1, type=int)
+    posts = db.select(BlogPost).order_by(BlogPost.date.desc())
+    posts = db.paginate(posts, page=page, per_page=2, error_out=False)
+    next_url = url_for('views.explore', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('views.explore', page=posts.prev_num) \
+        if posts.has_prev else None
+
+    return render_template("blog.html", all_posts=posts, current_user=current_user,
+                           next_url=next_url, prev_url=prev_url)
+
+
 # Blog
 @views.route('/blog', methods=['GET', 'POST'])
 @login_required
 def blog_all_posts():
-    page = request.args.get('page', 1, type=int)
-    query = db.select(BlogPost).order_by(BlogPost.date.desc())
-    posts = db.paginate(query, page=page, per_page=2, error_out=False)
-    next_url = url_for('views.blog_all_posts', page=posts.next_num) \
-        if posts.has_next else None
-    prev_url = url_for('views.blog_all_posts', page=posts.prev_num) \
-        if posts.has_prev else None
-
     # result = db.session.execute(db.select(BlogPost))
     # posts = result.scalars().all()
-    return render_template("blog.html", all_posts=posts.items, current_user=current_user,
-                           next_url=next_url, prev_url=prev_url)
+    # page = request.args.get('page', 1, type=int)
+    posts = db.session.scalars(current_user.following_posts()).all()
+    return render_template("blog.html", all_posts=posts, current_user=current_user)
 
 
 @views.route('/blog/<int:post_id>', methods=["GET", "POST"])
