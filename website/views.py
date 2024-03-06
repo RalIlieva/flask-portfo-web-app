@@ -146,6 +146,7 @@ def explore():
                            next_url=next_url, prev_url=prev_url)
 
 
+
 # Blog
 @views.route('/blog', methods=['GET', 'POST'])
 @login_required
@@ -153,8 +154,9 @@ def blog_all_posts():
     # result = db.session.execute(db.select(BlogPost))
     # posts = result.scalars().all()
     # page = request.args.get('page', 1, type=int)
-    posts = db.session.scalars(current_user.following_posts()).all()
-    return render_template("blog.html", all_posts=posts, current_user=current_user)
+    followed_posts = db.session.scalars(current_user.following_posts()).all()
+    return render_template("blog.html", all_posts=followed_posts, current_user=current_user, is_follow=True)
+
 
 
 @views.route('/blog/<int:post_id>', methods=["GET", "POST"])

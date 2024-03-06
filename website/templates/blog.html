@@ -12,7 +12,9 @@
 <div class="container px-4 px-lg-5">
   <div class="row gx-4 gx-lg-5 justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-7">
+
       <!-- Post preview-->
+
       {% for post in all_posts %}
       <div class="post-preview">
         <a href="{{ url_for('views.show_post', post_id=post.id) }}">
@@ -21,11 +23,10 @@
         </a>
         <p class="post-meta">
           Posted by
-<!--          Previously it was {{ post.author }}, now post.user is UserDB Object-->
           <a href="{{ url_for('views.myprofile', name=post.author.name) }}">{{post.author.name}}</a>
           on {{post.date}}
-          <!-- Only show delete button if user is logged in) -->
-          {% if current_user.is_authenticated and post.author_id == current_user.id %}
+          <!-- Only show delete button if user is the author) -->
+          {% if is_follow and post.author_id == current_user.id %}
           <a href="{{url_for('views.delete_post', post_id=post.id) }}">✘</a>
           {% endif %}
         </p>
@@ -36,15 +37,13 @@
 
 <!--       New Post-->
 <!--       Only show Create Post button if user is logged in-->
-      {% if current_user.is_authenticated %}
+      {% if is_follow: %}
       <div class="d-flex justify-content-end mb-4">
-        <a
-          class="btn btn-primary float-right"
-          href="{{url_for('views.add_new_post')}}"
-          >Create New Post</a
-        >
+        <a href="{{url_for('views.add_new_post')}}" class="btn btn-primary float-right">Create New Post</a>
       </div>
+      {% else: %}
       {% endif %}
+
       <!-- Pager-->
       <div class="d-flex justify-content-end mb-4">
         {% if prev_url  %}
