@@ -4,8 +4,13 @@
 
 {% block body_content %}
 <div class="container">
-        <h1>Welcome to my Blog</h1>
-        <p>Lorem ipsum dolor sit amet,labore minima perspiciat</p>
+    {% if is_follow: %}
+        <h1 align="center" class="fw-normal">Welcome to my Blog Space! </h1>
+        <p align="center" class="fw-normal">Here you can follow your friends' posts and share your thoughts.</p>
+    {% else: %}
+        <h1 align="center" class="fw-normal">Explore the Blog</h1>
+        <p align="center" class="fw-normal">You can find new friends and topics to discuss.</p>
+    {% endif %}
 </div>
 
 <!-- Main Content-->
