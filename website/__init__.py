@@ -34,7 +34,6 @@ def create_app():
     app.config.from_object(Config)
     bootstrap = Bootstrap5(app)
     ckeditor = CKEditor(app)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
     migrate = Migrate(app, db, render_as_batch=True, compare_type=True)
 
