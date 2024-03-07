@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase
@@ -28,8 +28,6 @@ db = SQLAlchemy(model_class=Base)
 DB_NAME = 'website.db'
 
 
-
-
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "Shall_hide_it_as_environ"
@@ -39,12 +37,15 @@ def create_app():
     db.init_app(app)
     migrate = Migrate(app, db, render_as_batch=True, compare_type=True)
 
-    from .auth import auth
     from .views import views
-    from .forms import RegisterForm, LoginForm, NoteForm, CreatePostForm, Comment, EditProfileForm, ChangePassword, EmptyForm
+    from .forms import NoteForm, CreatePostForm, Comment, EmptyForm
 
+    from website.errors import bp as error_bp
+    app.register_blueprint(error_bp)
 
-    app.register_blueprint(auth, url_prefix='/')
+    from website.auth.auth import auth as auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/')
+
     app.register_blueprint(views, url_prefix='/')
 
     from .models import UserDB, Note, BlogPost, Comments, followers
@@ -60,14 +61,7 @@ def create_app():
     def load_user(user_id):
         return db.get_or_404(UserDB, user_id)
 
-    @app.errorhandler(404)
-    def not_found_error(error):
-        return render_template('404.html'), 404
 
-    @app.errorhandler(500)
-    def internal_error(error):
-        db.session.rollback()
-        return render_template('500.html'), 500
 
         # Logging to a file setup
     if not app.debug:

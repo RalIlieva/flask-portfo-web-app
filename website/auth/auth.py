@@ -1,12 +1,11 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from .forms import RegisterForm, LoginForm, EditProfileForm, ChangePassword
-from .models import UserDB
-from . import db
+from website.models import UserDB
+from website import db
 from datetime import datetime, timezone
-
-auth = Blueprint('auth', __name__)
+from website.auth import auth # import the blueprint - auth
+from website.auth.forms import RegisterForm, LoginForm, EditProfileForm, ChangePassword
 
 
 @auth.before_request
@@ -43,7 +42,7 @@ def login():
             login_user(user)
             return redirect(url_for('views.myprofile', name=current_user.name))
 
-    return render_template('login.html', form=form, current_user=current_user)
+    return render_template('auth/login.html', form=form, current_user=current_user)
 
 
 @auth.route('/logout')
@@ -85,7 +84,7 @@ def register():
             db.session.commit()
             flash('Successful registration!', category='success')
             return redirect(url_for('auth.login'))
-    return render_template('register.html', form=form, current_user=current_user)
+    return render_template('auth/register.html', form=form, current_user=current_user)
 
 
 @auth.route('/edit-profile', methods=['GET', 'POST'])
@@ -101,7 +100,7 @@ def edit_profile():
     elif request.method == 'GET':
         form.name.data = current_user.name
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', form=form, current_user=current_user)
+    return render_template('auth/edit_profile.html', form=form, current_user=current_user)
 
 
 @auth.route('/change-password', methods=['GET', 'POST'])
@@ -122,6 +121,6 @@ def change_password():
             flash('Your old password is not correct', category='error')
     elif request.method == 'GET':
         form.password.data = current_user.password1
-    return render_template('change_password.html', form=form, current_user=current_user)
+    return render_template('auth/change_password.html', form=form, current_user=current_user)
 
 
