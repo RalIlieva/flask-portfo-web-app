@@ -1,14 +1,10 @@
-from flask import Blueprint, render_template, request, url_for, flash, jsonify, redirect
+from flask import Blueprint, render_template, request, url_for, flash, redirect
 from flask_login import login_required, current_user
-from .forms import NoteForm, CreatePostForm, Comment, EmptyForm
-from .models import Note, BlogPost, Comments, UserDB
-from . import db
-import json
+from website.models import Note, BlogPost, Comments, UserDB
+from website import db
 from datetime import date
-
-
-views = Blueprint('views', __name__)
-
+from website.views import views
+from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
@@ -57,7 +53,7 @@ def myprofile(name):
 
     followform = EmptyForm()
 
-    return render_template('profile.html', form=form, current_user=current_user,
+    return render_template('views/profile.html', form=form, current_user=current_user,
                            user=user, posts=posts.items, comments=comments.items, followform=followform,
                            next_url=next_url, prev_url=prev_url)
 
@@ -87,7 +83,7 @@ def explore():
     prev_url = url_for('views.explore', page=posts.prev_num) \
         if posts.has_prev else None
 
-    return render_template("blog.html", all_posts=posts, current_user=current_user,
+    return render_template("views/blog.html", all_posts=posts, current_user=current_user,
                            next_url=next_url, prev_url=prev_url)
 
 
@@ -100,7 +96,7 @@ def blog_all_posts():
         if followed_posts.has_next else None
     prev_url = url_for('views.blog_all_posts', page=followed_posts.prev_num) \
         if followed_posts.has_prev else None
-    return render_template("blog.html", all_posts=followed_posts, current_user=current_user, is_follow=True,
+    return render_template("views/blog.html", all_posts=followed_posts, current_user=current_user, is_follow=True,
                            next_url=next_url, prev_url=prev_url)
 
 
@@ -125,7 +121,7 @@ def show_post(post_id):
         db.session.add(new_comment)
         db.session.commit()
         return redirect(url_for("views.show_post", post_id=requested_post.id))
-    return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
+    return render_template("views/post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 
 @views.route("/new-post", methods=["GET", "POST"])
@@ -144,7 +140,7 @@ def add_new_post():
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for("views.blog_all_posts"))
-    return render_template("make-post.html", form=form, current_user=current_user)
+    return render_template("views/make-post.html", form=form, current_user=current_user)
 
 
 @views.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
@@ -166,7 +162,7 @@ def edit_post(post_id):
         post.body = edit_form.body.data
         db.session.commit()
         return redirect(url_for("views.show_post", post_id=post.id))
-    return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)
+    return render_template("views/make-post.html", form=edit_form, is_edit=True, current_user=current_user)
 
 @views.route("/delete/<int:post_id>")
 @login_required

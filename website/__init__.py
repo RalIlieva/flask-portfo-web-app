@@ -38,7 +38,7 @@ def create_app():
     migrate = Migrate(app, db, render_as_batch=True, compare_type=True)
 
     from .views import views
-    from .forms import NoteForm, CreatePostForm, Comment, EmptyForm
+    from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm
 
     from website.errors import bp as error_bp
     app.register_blueprint(error_bp)
@@ -46,6 +46,7 @@ def create_app():
     from website.auth.auth import auth as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/')
 
+    from website.views.views import views
     app.register_blueprint(views, url_prefix='/')
 
     from .models import UserDB, Note, BlogPost, Comments, followers
@@ -60,7 +61,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return db.get_or_404(UserDB, user_id)
-
 
 
         # Logging to a file setup
