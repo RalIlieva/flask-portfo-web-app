@@ -90,10 +90,10 @@
                         {% include '_comments.html'  %}
                 {% endfor %}
         {% if prev_url %}
-            <a href="{{ prev_url }}">Newer</a>
+            <a href="{{ prev_url }}" class="btn btn-secondary">Newer</a>
         {% endif %}
         {% if next_url %}
-            <a href="{{ next_url }}">Older</a>
+            <a href="{{ next_url }}" class="btn btn-secondary">Older</a>
         {% endif %}
 
         </div>
