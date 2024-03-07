@@ -10,10 +10,10 @@ from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 import logging
 from logging.handlers import RotatingFileHandler
+from config import Config
 
 
-
-#A must to avoid problems with migrations, esp. contraints and connames
+# A must to avoid problems with migrations, esp. constraints and con-names
 metadata = MetaData(naming_convention={
     "ix": "ix_%(column_0_label)s",
     "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -21,6 +21,7 @@ metadata = MetaData(naming_convention={
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
     "pk": "pk_%(table_name)s"
 })
+
 
 class Base(DeclarativeBase):
     metadata=metadata
@@ -30,7 +31,7 @@ DB_NAME = 'website.db'
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = "Shall_hide_it_as_environ"
+    app.config.from_object(Config)
     bootstrap = Bootstrap5(app)
     ckeditor = CKEditor(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
@@ -61,7 +62,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return db.get_or_404(UserDB, user_id)
-
 
         # Logging to a file setup
     if not app.debug:
