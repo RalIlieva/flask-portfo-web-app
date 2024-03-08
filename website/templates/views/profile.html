@@ -108,6 +108,7 @@
         <div class="col-md-7">
             <h2 class="featurette-heading fw-normal lh-1" id="notes">My Notes</h2>
             {% include '_notes.html' %}
+                {{ form.hidden_tag() }}
                 {{ render_form(form) }}
         </div>
     </div>

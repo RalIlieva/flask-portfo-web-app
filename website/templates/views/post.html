@@ -47,7 +47,7 @@
         {% endif %}
         <br>
         <!-- Comments Area -->
-
+{{ form.hidden_tag() }}
 {{ ckeditor.load() }}
 {{ ckeditor.config(name='comment_text') }}
 {{ render_form(form) }}

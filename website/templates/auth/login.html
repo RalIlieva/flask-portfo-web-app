@@ -9,6 +9,7 @@
             <main class="form-signin">
                 <h2 class="h3 mb-3 fw-normal text-center">Please Sign in</h2>
                 <p class="text-center">Using bootstrap-WTForms. Learning how to style.</p>
+                    {{  form.hidden_tag() }}
                     {{ render_form(form, button_style='btn btn-outline-primary w-100 btn btn-lg') }}
             </main>
         </div>
