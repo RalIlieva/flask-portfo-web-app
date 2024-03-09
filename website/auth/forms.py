@@ -49,3 +49,14 @@ class EditProfileForm(FlaskForm):
             #Also working - user = UserDB.query.filter_by(name=name.data).first()
             if user is not None:
                 raise ValidationError('This username is already taken. Please choose a different name')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = EmailField(label='Email', validators=[Email(allow_empty_local=False)])
+    submit = SubmitField(label='Request Password Reset')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(label='Password', validators=[DataRequired()])
+    password2 = PasswordField(label='Repeat Passowrd', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(label='Request Password Reset')

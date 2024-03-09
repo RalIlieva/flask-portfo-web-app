@@ -11,6 +11,7 @@ from flask_ckeditor import CKEditor
 import logging
 from logging.handlers import RotatingFileHandler
 from config import Config
+from flask_mail import Mail
 
 
 # A must to avoid problems with migrations, esp. constraints and con-names
@@ -27,15 +28,20 @@ class Base(DeclarativeBase):
     metadata=metadata
 db = SQLAlchemy(model_class=Base)
 DB_NAME = 'website.db'
+migrate = Migrate(render_as_batch=True, compare_type=True)
+mail = Mail()
+bootstrap = Bootstrap5()
+ckeditor = CKEditor()
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    bootstrap = Bootstrap5(app)
-    ckeditor = CKEditor(app)
+    bootstrap.init_app(app)
+    ckeditor.init_app(app)
     db.init_app(app)
-    migrate = Migrate(app, db, render_as_batch=True, compare_type=True)
+    migrate.init_app(app, db)
+    mail.init_app(app)
 
     from .views import views
     from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm

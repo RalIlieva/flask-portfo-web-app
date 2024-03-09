@@ -5,7 +5,8 @@ from website.models import UserDB
 from website import db
 from datetime import datetime, timezone
 from website.auth import auth # import the blueprint - auth
-from website.auth.forms import RegisterForm, LoginForm, EditProfileForm, ChangePassword
+from website.auth.forms import RegisterForm, LoginForm, EditProfileForm, ChangePassword, ResetPasswordRequestForm, ResetPasswordForm
+from website.auth.email import send_password_reset_email
 
 
 @auth.before_request
@@ -124,3 +125,31 @@ def change_password():
     return render_template('auth/change_password.html', form=form, current_user=current_user)
 
 
+@auth.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('views.home'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(db.select(UserDB).where(UserDB.email == form.email.data))
+        if user:
+            send_password_reset_email(user)
+        flash('Check your email for the instructions how to reset your password.')
+        return redirect(url_for('auth.login'))
+    return render_template('auth/reset_password_request.html', form=form)
+
+
+@auth.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('views.home'))
+    user = UserDB.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('views.home'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('auth.login'))
+    return render_template('auth/reset_password.html', form=form)

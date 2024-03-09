@@ -8,6 +8,10 @@ from sqlalchemy.sql import func
 from hashlib import md5
 from typing import Optional
 from datetime import datetime, timezone
+from time import time
+import jwt
+from flask import current_app
+
 
 
 followers = sa.Table(
@@ -82,6 +86,20 @@ class UserDB(db.Model, UserMixin):
             .group_by(BlogPost)
             .order_by(BlogPost.date.desc())
         )
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except Exception:
+            return
+        return db.session.get(UserDB, id)
 
 
 class Note(db.Model):

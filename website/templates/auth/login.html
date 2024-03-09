@@ -12,6 +12,9 @@
                     {{  form.hidden_tag() }}
                     {{ render_form(form, button_style='btn btn-outline-primary w-100 btn btn-lg') }}
             </main>
+            <p class="text-center">Forgot your password?
+                <a href="{{ url_for('auth.reset_password_request') }}">Click to reset it</a>
+            </p>
         </div>
     </div>
 </div>
