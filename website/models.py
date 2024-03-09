@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from time import time
 import jwt
 from flask import current_app
+from werkzeug.security import generate_password_hash
 
 
 
@@ -100,6 +101,9 @@ class UserDB(db.Model, UserMixin):
         except Exception:
             return
         return db.session.get(UserDB, id)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
 
 
 class Note(db.Model):
