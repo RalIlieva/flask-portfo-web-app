@@ -1,4 +1,5 @@
 # Project - wise
+.env
 instance
 .idea
 # Byte-compiled / optimized / DLL files
