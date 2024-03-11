@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, flash, redirect
+from flask import render_template, request, url_for, flash, redirect, current_app
 from flask_login import login_required, current_user
 from website.models import Note, BlogPost, Comments, UserDB
 from website import db
@@ -38,14 +38,14 @@ def myprofile(name):
     # When viewing other profile - show only the posts of the user
     page = request.args.get('page', 1, type=int)
     query = user.posts.select().order_by(BlogPost.date.desc())
-    posts = db.paginate(query, page=page, per_page=3, error_out=False)
+    posts = db.paginate(query, page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     next_url = url_for('views.myprofile', name=user.name, page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('views.myprofile', name=user.name, page=posts.prev_num)\
         if posts.has_prev else None
 
     query_comments = Comments.query.filter_by(author_id=user.id)
-    comments = db.paginate(query_comments, page=page, max_per_page=3, error_out=False)
+    comments = db.paginate(query_comments, page=page, max_per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     next_url = url_for('views.myprofile', name=user.name, page=comments.next_num)\
         if comments.has_next else None
     prev_url = url_for('views.myprofile', name=user.name, page=comments.prev_num)\
@@ -77,7 +77,7 @@ def delete_note(note_id):
 def explore():
     page = request.args.get('page', 1, type=int)
     posts = db.select(BlogPost).order_by(BlogPost.date.desc())
-    posts = db.paginate(posts, page=page, per_page=2, error_out=False)
+    posts = db.paginate(posts, page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     next_url = url_for('views.explore', page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('views.explore', page=posts.prev_num) \
@@ -91,7 +91,7 @@ def explore():
 @login_required
 def blog_all_posts():
     page = request.args.get('page', 1, type=int)
-    followed_posts = db.paginate(current_user.following_posts(), page=page, per_page=3, error_out=False)
+    followed_posts = db.paginate(current_user.following_posts(), page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     next_url = url_for('views.blog_all_posts', page=followed_posts.next_num) \
         if followed_posts.has_next else None
     prev_url = url_for('views.blog_all_posts', page=followed_posts.prev_num) \
