@@ -17,4 +17,4 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_AUTH_METHOD = 'PLAIN'  # Use PLAIN authentication
     ADMINS = ['pthntstngml@gmail.com']
-    # POSTS_PER_PAGE = 5
+    POSTS_PER_PAGE = 4
