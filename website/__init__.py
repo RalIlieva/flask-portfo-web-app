@@ -43,8 +43,8 @@ def create_app():
     migrate.init_app(app, db)
     mail.init_app(app)
 
-    from .views import views
-    from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm
+    # from .views import views
+    # from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm
 
     from website.errors import bp as error_bp
     app.register_blueprint(error_bp)
