@@ -12,6 +12,7 @@ import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 from config import Config
 from flask_mail import Mail
+from flask_moment import Moment
 
 
 # A must to avoid problems with migrations, esp. constraints and con-names
@@ -32,6 +33,7 @@ migrate = Migrate(render_as_batch=True, compare_type=True)
 mail = Mail()
 bootstrap = Bootstrap5()
 ckeditor = CKEditor()
+moment = Moment()
 
 
 def create_app():
@@ -42,6 +44,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
+    moment.init_app(app)
 
     # from .views import views
     # from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm
