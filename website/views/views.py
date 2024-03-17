@@ -1,10 +1,16 @@
-from flask import render_template, request, url_for, flash, redirect, current_app
+from flask import render_template, request, url_for, flash, redirect, current_app, g
 from flask_login import login_required, current_user
 from website.models import Note, BlogPost, Comments, UserDB
 from website import db
 from datetime import date
 from website.views import views
-from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm
+from website.views.forms import NoteForm, CreatePostForm, Comment, EmptyForm, SearchForm
+
+
+@views.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        g.search_form = SearchForm()
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
@@ -222,3 +228,20 @@ def unfollow(name):
         return redirect(url_for('views.myprofile', name=name))
     else:
         return redirect(url_for('views.blog_all_posts'))
+
+
+@views.route('/search')
+@login_required
+def search():
+    user = current_user
+    if not g.search_form.validate():
+        return redirect(url_for('views.explore'))
+    page = request.args.get('page', 1, type=int)
+    posts, total = BlogPost.search(g.search_form.q.data, page,
+                               current_app.config['POSTS_PER_PAGE'])
+    next_url = url_for('views.search', q=g.search_form.q.data, page=page + 1) \
+        if total > page * current_app.config['POSTS_PER_PAGE'] else None
+    prev_url = url_for('views.search', q=g.search_form.q.data, page=page - 1) \
+        if page > 1 else None
+    return render_template('search.html', posts=posts, user=user,
+                           next_url=next_url, prev_url=prev_url)

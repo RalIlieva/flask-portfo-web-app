@@ -17,4 +17,5 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_AUTH_METHOD = 'PLAIN'  # Use PLAIN authentication
     ADMINS = ['pthntstngml@gmail.com']
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     POSTS_PER_PAGE = 4
