@@ -166,7 +166,7 @@ class Note(db.Model):
 
 class BlogPost(SearchableMixin, db.Model):
     __tablename__ = "blog_posts"
-    __searchable__ = ['body']
+    __searchable__ = ['title', 'subtitle', 'body']
     __indexname__ = "blog_posts"  # Specify the Elasticsearch index name
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
 

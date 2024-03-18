@@ -11,7 +11,9 @@
       </a>
       posts:
       <br>
+      <a href="{{ url_for('views.show_post', post_id=post.id) }}">
       {{ post.title | safe }}
+      </a>
     </td>
   </tr>
 </table>
