@@ -28,7 +28,8 @@
         </a>
         <p class="post-meta">
           Posted by
-          <a href="{{ url_for('views.myprofile', name=post.author.name) }}">{{post.author.name}}</a>
+          <a class="user_popup" :w
+             href="{{ url_for('views.myprofile', name=post.author.name) }}">{{post.author.name}}</a>
           on {{post.date}}
           <!-- Only show delete button if user is the author) -->
           {% if is_follow and post.author_id == current_user.id %}

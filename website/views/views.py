@@ -64,6 +64,14 @@ def myprofile(name):
                            next_url=next_url, prev_url=prev_url)
 
 
+@views.route('/profile/<name>/popup')
+@login_required
+def user_popup(name):
+    user = db.first_or_404(db.select(UserDB).where(UserDB.name == name))
+    form = EmptyForm()
+    return render_template('user_popup.html', user=user, form=form)
+
+
 @views.route('/delete-note/<int:note_id>', methods=['POST'])
 @login_required
 def delete_note(note_id):
