@@ -6,7 +6,8 @@
       </a>
     </td>
     <td>
-      <a href="{{ url_for('views.myprofile', name=user.name) }}">
+      <a class="user_popup" :w
+         href="{{ url_for('views.myprofile', name=user.name) }}">
         {{ comment.comment_author.name }}
       </a>
       comments:
