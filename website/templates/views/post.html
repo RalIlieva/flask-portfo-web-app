@@ -20,7 +20,8 @@
           <span class="meta"
             >Posted by
 <!--            Changed from post.author-->
-            <a href="{{ url_for('views.myprofile', name=post.author.name) }}">{{ post.author.name }}</a>
+            <a class="user_popup" :w
+                href="{{ url_for('views.myprofile', name=post.author.name) }}">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
         </div>
@@ -61,7 +62,8 @@
             </div>
             <div class="commentContent">
                 <div class="authorInfo">
-                    <a href="{{ url_for('views.myprofile', name=comment.comment_author.name) }}">
+                    <a class="user_popup" :w
+                        href="{{ url_for('views.myprofile', name=comment.comment_author.name) }}">
                         <span class="authorName">{{ comment.comment_author.name }}</span>
                     </a>
                     {% if comment.comment_author.email == current_user.email %}
