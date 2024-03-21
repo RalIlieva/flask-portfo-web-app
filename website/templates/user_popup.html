@@ -27,37 +27,3 @@
     {% endif %}
   {% endif %}
 </div>
-
-
-
-
-
-<!--
-<div>
-  <img src="{{ user.avatar(64) }}" style="margin: 5px; float: left">
-  <p><a href="{{ url_for('views.myprofile', name=user.name) }}">{{ user.name }}</a></p>
-  {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-  <div class="clearfix"></div>
-  {% if user.last_seen %}
-  <p>{{ ('Last seen on') }}: {{ moment(user.last_seen).format('lll') }}</p>
-  {% endif %}
-  <p>{{ ('%(count)d followers' % {'count': user.followers_count()}) }}, {{ ('%(count)d following' % {'count': user.following_count()}) }}</p>
-
-  {% if user != current_user %}
-    {% if not current_user.is_following(user) %}
-    <p>
-      <form action="{{ url_for('views.follow', name=user.name) }}" method="post">
-        {{ form.hidden_tag() }}
-        {{ form.submit(value=('Follow'), class='btn btn-outline-primary btn-sm') }}
-      </form>
-    </p>
-    {% else %}
-    <p>
-      <form action="{{ url_for('views.unfollow', name=user.name) }}" method="post">
-        {{ form.hidden_tag() }}
-        {{ form.submit(value=('Unfollow'), class='btn btn-outline-primary btn-sm') }}
-      </form>
-    </p>
-    {% endif %}
-  {% endif %}
-</div>-->

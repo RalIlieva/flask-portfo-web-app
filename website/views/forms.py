@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, URL
 from flask_ckeditor import CKEditorField
 from flask import request
@@ -13,11 +13,11 @@ class NoteForm(FlaskForm):
 
 
 class CreatePostForm(FlaskForm):
-    title = StringField("Blog Post Title", validators=[DataRequired()])
-    subtitle = StringField("Subtitle", validators=[DataRequired()])
-    img_url = StringField("Blog Image URL", validators=[URL()])
-    body = CKEditorField("Blog Content", validators=[DataRequired()])
-    submit = SubmitField("Submit Post")
+    title = StringField(label="Blog Post Title", validators=[DataRequired()])
+    subtitle = StringField(label="Subtitle", validators=[DataRequired()])
+    img_url = StringField(label="Blog Image URL", validators=[URL()])
+    body = CKEditorField(label="Blog Content", validators=[DataRequired()])
+    submit = SubmitField(label="Submit Post")
 
 
 class Comment(FlaskForm):
@@ -38,3 +38,8 @@ class SearchForm(FlaskForm):
         if 'meta' not in kwargs:
             kwargs['meta'] = {'csrf': False}
         super(SearchForm, self).__init__(*args, **kwargs)
+
+
+class MessageForm(FlaskForm):
+    message = TextAreaField(label='Message', validators=[DataRequired(), Length(min=0, max=150)])
+    submit = SubmitField(label='Submit')
