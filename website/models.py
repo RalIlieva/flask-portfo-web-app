@@ -13,6 +13,7 @@ import jwt
 from flask import current_app
 from werkzeug.security import generate_password_hash
 from website.search import add_to_index, remove_from_index, query_index
+import json
 
 
 class SearchableMixin(object):
@@ -99,6 +100,10 @@ class UserDB(db.Model, UserMixin):
     messages_received: so.WriteOnlyMapped['Message'] = so.relationship(
         foreign_keys='Message.recipient_id', back_populates='recipient')
 
+    notifications: so.WriteOnlyMapped['Notification'] = so.relationship(
+        back_populates='user')
+
+
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
@@ -165,6 +170,14 @@ class UserDB(db.Model, UserMixin):
             query.subquery()))
 
 
+    def add_notification(self, name, data):
+        db.session.execute(self.notifications.delete().where(
+            Notification.name == name))
+        n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        db.session.add(n)
+        return n
+
+
 class Note(db.Model):
     __tablename__ = "note"
     id:  Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -215,21 +228,33 @@ class Comments(db.Model):
 
 
 class Message(db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    sender_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(UserDB.id),
-                                                 index=True)
-    recipient_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(UserDB.id),
-                                                    index=True)
-    body: so.Mapped[str] = so.mapped_column(sa.String(140))
-    timestamp: so.Mapped[datetime] = so.mapped_column(
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sender_id: Mapped[int] = mapped_column(sa.ForeignKey(UserDB.id), index=True)
+    recipient_id: Mapped[int] = mapped_column(sa.ForeignKey(UserDB.id), index=True)
+    body: Mapped[str] = mapped_column(sa.String(140))
+    timestamp: Mapped[datetime] = mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc))
 
-    author: so.Mapped[UserDB] = so.relationship(
+    author: Mapped[UserDB] = relationship(
         foreign_keys='Message.sender_id',
         back_populates='messages_sent')
-    recipient: so.Mapped[UserDB] = so.relationship(
+    recipient: Mapped[UserDB] = relationship(
         foreign_keys='Message.recipient_id',
         back_populates='messages_received')
 
     def __repr__(self):
         return '<Message {}>'.format(self.body)
+
+
+class Notification(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(128), index=True)
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(UserDB.id),
+                                               index=True)
+    timestamp: so.Mapped[float] = so.mapped_column(index=True, default=time)
+    payload_json: so.Mapped[str] = so.mapped_column(sa.Text)
+
+    user: so.Mapped[UserDB] = so.relationship(back_populates='notifications')
+
+    def get_data(self):
+        return json.loads(str(self.payload_json))
