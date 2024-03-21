@@ -62,7 +62,7 @@ def create_app():
     from website.views.views import views
     app.register_blueprint(views, url_prefix='/')
 
-    from .models import UserDB, Note, BlogPost, Comments, followers
+    from .models import UserDB, Note, BlogPost, Comments, followers, Message, Notification
 
     with app.app_context():
         db.create_all()

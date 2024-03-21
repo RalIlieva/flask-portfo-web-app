@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, flash, redirect, current_app, g
 from flask_login import login_required, current_user
-from website.models import Note, BlogPost, Comments, UserDB, Message
+from website.models import Note, BlogPost, Comments, UserDB, Message, Notification
 from website import db
 from datetime import date
 from website.views import views
@@ -265,8 +265,8 @@ def send_message(recipient):
         msg = Message(author=current_user, recipient=user,
                       body=form.message.data)
         db.session.add(msg)
-        # user.add_notification('unread_message_count',
-        #                       user.unread_message_count())
+        user.add_notification('unread_message_count',
+                              user.unread_message_count())
         db.session.commit()
         flash('Your message has been sent.')
         return redirect(url_for('views.myprofile', name=recipient))
@@ -277,7 +277,7 @@ def send_message(recipient):
 @login_required
 def messages():
     current_user.last_message_read_time = datetime.now(timezone.utc)
-    # current_user.add_notification('unread_message_count', 0)
+    current_user.add_notification('unread_message_count', 0)
     db.session.commit()
     page = request.args.get('page', 1, type=int)
     query = current_user.messages_received.select().order_by(
@@ -285,10 +285,23 @@ def messages():
     messages = db.paginate(query, page=page,
                            per_page=current_app.config['POSTS_PER_PAGE'],
                            error_out=False)
-    next_url = url_for('main.messages', page=messages.next_num) \
+    next_url = url_for('views.messages', page=messages.next_num) \
         if messages.has_next else None
-    prev_url = url_for('main.messages', page=messages.prev_num) \
+    prev_url = url_for('views.messages', page=messages.prev_num) \
         if messages.has_prev else None
     return render_template('messages.html', messages=messages.items,
                            next_url=next_url, prev_url=prev_url, user=current_user)
 
+
+@views.route('/notifications')
+@login_required
+def notifications():
+    since = request.args.get('since', 0.0, type=float)
+    query = current_user.notifications.select().where(
+        Notification.timestamp > since).order_by(Notification.timestamp.asc())
+    notifications = db.session.scalars(query)
+    return [{
+        'name': n.name,
+        'data': n.get_data(),
+        'timestamp': n.timestamp
+    } for n in notifications]
