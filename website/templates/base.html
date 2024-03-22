@@ -83,7 +83,7 @@
 {{ bootstrap.load_js() }}
 {{ moment.include_moment() }}
 <!--Adding JS for popup-->
-<script>
+ <script>
      function initialize_popovers() {
         const popups = document.getElementsByClassName('user_popup');
         for (let i = 0; i < popups.length; i++) {
@@ -135,8 +135,6 @@
       }
       document.addEventListener('DOMContentLoaded', initialize_notifications);
       {% endif %}
-
-
-</script>
+ </script>
 </body>
 </html>
