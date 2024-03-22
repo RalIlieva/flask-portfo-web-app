@@ -70,7 +70,7 @@ def myprofile(name):
 def user_popup(name):
     user = db.first_or_404(db.select(UserDB).where(UserDB.name == name))
     form = EmptyForm()
-    return render_template('user_popup.html', user=user, form=form)
+    return render_template('views/user_popup.html', user=user, form=form)
 
 
 @views.route('/delete-note/<int:note_id>', methods=['POST'])
@@ -270,7 +270,7 @@ def send_message(recipient):
         db.session.commit()
         flash('Your message has been sent.')
         return redirect(url_for('views.myprofile', name=recipient))
-    return render_template('send_message.html', form=form, recipient=recipient)
+    return render_template('views/send_message.html', form=form, recipient=recipient)
 
 
 @views.route('/messages')
@@ -289,7 +289,7 @@ def messages():
         if messages.has_next else None
     prev_url = url_for('views.messages', page=messages.prev_num) \
         if messages.has_prev else None
-    return render_template('messages.html', messages=messages.items,
+    return render_template('views/messages.html', messages=messages.items,
                            next_url=next_url, prev_url=prev_url, user=current_user)
 
 
