@@ -52,13 +52,20 @@
 
       <!-- Pager-->
       <div class="d-flex justify-content-end mb-4">
-        {% if prev_url  %}
-        <a href="{{ prev_url }}" class="btn btn-secondary text-uppercase">Newer Posts</a>
-        {% endif %}
-
-        {% if next_url %}
-        <a href="{{ next_url}}" class="btn btn-secondary text-uppercase">Older Posts</a>
-        {% endif %}
+              <nav aria-label="Post navigation">
+        <ul class="pagination">
+          <li class="page-item{% if not prev_url %} disabled{% endif %}">
+            <a class="page-link" href="{{ prev_url }}">
+              <span aria-hidden="true">&larr;</span>Newer posts
+            </a>
+          </li>
+          <li class="page-item{% if not next_url %} disabled{% endif %}">
+            <a class="page-link" href="{{ next_url }}">
+              Older posts <span aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
       </div>
     </div>
   </div>
