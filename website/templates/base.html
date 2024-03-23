@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>{% block title %}Title{% endblock %}</title>
 </head>
+
 <body>
 <div class="container">
   <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
@@ -17,22 +18,19 @@
           </svg>
         </a>
       </div>
+
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <li><a href="{{ url_for('views.home') }}" class="nav-link px-2 link-secondary">Home</a></li>
         <li><a href="{{ url_for('views.explore') }}" class="nav-link px-2">Explore</a></li>
-
-          {% if current_user.is_authenticated %}
-        <li><a href="{{ url_for('views.myprofile', name=current_user.name) }}" class="nav-link px-2">My Profile</a></li>
+        {% if current_user.is_authenticated %}
         <li><a href="{{ url_for('views.blog_all_posts') }}" class="nav-link px-2">Feed</a></li>
-
-                {% if g.search_form %}
-                <form class="navbar-form navbar-left" method="get"
-                        action="{{ url_for('views.search') }}">
-                    <div class="form-group">
-                        {{ g.search_form.q(size=20, class='form-control',
-                            placeholder=g.search_form.q.label.text) }}
-                    </div>
-                </form>
+            {% if g.search_form %}
+            <form class="navbar-form navbar-left" method="get" action="{{ url_for('views.search') }}">
+                <div class="form-group">
+                     {{ g.search_form.q(size=15, class='form-control',placeholder=g.search_form.q.label.text) }}
+                </div>
+            </form>
+        <li><a href="{{ url_for('views.myprofile', name=current_user.name) }}" class="nav-link px-2">My Profile</a></li>
         <li><a href="{{ url_for('views.messages') }}" class="nav-link px-2">Messages
          {% set unread_message_count = current_user.unread_message_count() %}
                 <span id="message_count" class="badge text-bg-danger"
@@ -40,9 +38,8 @@
                                          {% else %}hidden{% endif %};">
                     {{ unread_message_count }}
                 </span>
-        </a></li>
-
-          {% endif %}
+         </a></li>
+         {% endif %}
       </ul>
      <div class="col-md-3 text-end">
          <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-primary me-2">Logout</a>
@@ -51,8 +48,9 @@
          <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register</a>
          {% endif %}
      </div>
-    </header>
+  </header>
 </div>
+
 <!--Flash messages-->
 <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -61,7 +59,7 @@
         <div class="alert alert-danger alter-dismissable fade show" role="alert">
             {{ message }}
             <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true"></span>
             </button>
         </div>
         {% else %}
@@ -83,7 +81,7 @@
 {{ bootstrap.load_js() }}
 {{ moment.include_moment() }}
 <!--Adding JS for popup-->
-<script>
+ <script>
      function initialize_popovers() {
         const popups = document.getElementsByClassName('user_popup');
         for (let i = 0; i < popups.length; i++) {
@@ -135,8 +133,6 @@
       }
       document.addEventListener('DOMContentLoaded', initialize_notifications);
       {% endif %}
-
-
-</script>
+ </script>
 </body>
 </html>

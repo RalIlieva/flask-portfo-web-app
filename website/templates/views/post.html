@@ -48,18 +48,18 @@
         {% endif %}
         <br>
         <!-- Comments Area -->
-{{ form.hidden_tag() }}
-{{ ckeditor.load() }}
-{{ ckeditor.config(name='comment_text') }}
-{{ render_form(form) }}
+        {{ form.hidden_tag() }}
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='comment_text') }}
+        {{ render_form(form) }}
 
-<div class="comment">
-    <ul class="commentList">
-        {% for comment in post.comments %}
-        <li class="commentItem">
-            <div class="commentHeader">
-                <img src="{{ comment.comment_author.avatar(36) }}" />
-            </div>
+        <div class="comment">
+            <ul class="commentList">
+                {% for comment in post.comments %}
+                <li class="commentItem">
+                    <div class="commentHeader">
+                    <img src="{{ comment.comment_author.avatar(36) }}" />
+        </div>
             <div class="commentContent">
                 <div class="authorInfo">
                     <a class="user_popup" :w
@@ -71,13 +71,11 @@
                     {% endif %}
                 </div>
                 <div class="commentText">{{ comment.text|safe }}</div>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-
-
+                </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
       </div>
     </div>
   </div>
