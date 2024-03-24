@@ -7,6 +7,10 @@
     text-align: center;
 }
 
+/* Font */
+.fw-normal {
+    font-weight: normal !important;
+}
 
 /*Comment area */
 .comment {
@@ -49,7 +53,7 @@
 }
 
 .commentText {
-  margin-top: 5px; /* Adjust as needed */
+  margin-top: 5px;
 }
 
 .deleteCommentBtn {
@@ -64,118 +68,180 @@
 
 
 /* Posts */
+/* Header Masthead */
 header.masthead {
-  position: relative;
-  margin-bottom: 3rem;
-  padding-top: calc(8rem + 57px);
-  padding-bottom: 8rem;
-  background: no-repeat center center;
-  background-color: #6c757d;
-  background-size: cover;
-  background-attachment: scroll;
+    position: relative;
+    margin-bottom: 3rem;
+    padding-top: calc(8rem + 57px);
+    padding-bottom: 8rem;
+    background: no-repeat center center;
+    background-color: #6c757d;
+    background-size: cover;
+    background-attachment: scroll;
 }
+
+/* Add border-radius to the image inside .post-heading */
+header.masthead {
+    border-radius: 5%;
+    overflow: hidden; /* Ensure the image stays within the rounded borders */
+}
+
+/* Overlay effect */
 header.masthead:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #212529;
-  opacity: 0.5;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #212529;
+    opacity: 0.5;
+    z-index: -1; /* Move the overlay behind the image */
 }
+
+/* Heading styles */
 header.masthead .page-heading,
 header.masthead .post-heading,
 header.masthead .site-heading {
-  color: #fff;
+    color: #fff;
+
 }
-header.masthead .page-heading,
-header.masthead .site-heading {
-  text-align: center;
+
+.card-footer .meta {
+    color: #fff; /* White color for the meta text */
 }
-header.masthead .page-heading h1, header.masthead .page-heading .h1,
-header.masthead .site-heading h1,
-header.masthead .site-heading .h1 {
-  font-size: 3rem;
+
+/* Page Heading and Site Heading */
+header.masthead .page-heading h1,
+header.masthead .site-heading h1 {
+    font-size: 2rem;
+    font-family: "Open Sans", sans-serif;
+    font-weight: normal;
+    margin: 0.5rem 0;
+    line-height: 1.1;
+    color: inherit; /* Inherit color from parent */
 }
+
+/* Subheading styles */
 header.masthead .page-heading .subheading,
 header.masthead .site-heading .subheading {
-  font-size: 1.5rem;
-  font-weight: 300;
-  line-height: 1.1;
-  display: block;
-  margin-top: 0.625rem;
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.1;
+    display: block;
+    margin-top: 0.625rem;
+    font-family: "Open Sans", sans-serif;
+    color: inherit; /* Inherit color from parent */
 }
-header.masthead .post-heading h1, header.masthead .post-heading .h1 {
-  font-size: 2.25rem;
+
+/* Post Heading styles */
+header.masthead .post-heading h1,
+header.masthead .post-heading .h1 {
+    font-size: 1.75rem;
+    font-family: "Open Sans", sans-serif;
+    color: inherit; /* Inherit color from parent */
 }
+
+/* Meta information for posts */
 header.masthead .post-heading .meta,
 header.masthead .post-heading .subheading {
-  line-height: 1.1;
-  display: block;
+    line-height: 1.1;
+    display: block;
 }
+
 header.masthead .post-heading .subheading {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0.75rem 0 2rem;
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0.5rem 0 1rem;
+    font-family: "Open Sans", sans-serif;
+    color: inherit; /* Inherit color from parent */
 }
+
 header.masthead .post-heading .meta {
-  font-size: 1.25rem;
-  font-weight: 300;
-  font-style: italic;
-  font-family: "Lora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 300;
+    font-style: italic;
+    font-family: "Lora", serif;
+    color: inherit; /* Inherit color from parent */
 }
+
 header.masthead .post-heading .meta a {
-  color: #fff;
+    color: #fff;
 }
+
+
+/* Media queries for larger screens */
 @media (min-width: 992px) {
-  header.masthead {
-    padding-top: 12.5rem;
-    padding-bottom: 12.5rem;
-  }
-  header.masthead .page-heading h1, header.masthead .page-heading .h1,
-  header.masthead .site-heading h1,
-  header.masthead .site-heading .h1 {
-    font-size: 5rem;
-  }
-  header.masthead .post-heading h1, header.masthead .post-heading .h1 {
-    font-size: 3.5rem;
-  }
-  header.masthead .post-heading .subheading {
-    font-size: 1.875rem;
-  }
+    header.masthead {
+        padding-top: 10rem;
+        padding-bottom: 10rem;
+    }
+
+    header.masthead .page-heading h1,
+    header.masthead .site-heading h1 {
+        font-size: 3rem;
+    }
+
+    header.masthead .post-heading h1,
+    header.masthead .post-heading .h1 {
+        font-size: 2rem;
+    }
+
+    header.masthead .post-heading .subheading {
+        font-size: 1.5rem;
+    }
 }
 
-
+/* Hover effect for blog post preview */
 .post-preview > a {
-  color: #212529;
+    color: #212529;
+    transition: color 0.3s ease;
 }
-.post-preview > a:focus, .post-preview > a:hover {
-  text-decoration: none;
-  color: #0085A1;
+
+.post-preview > a:hover {
+    color: #0085A1; /* Change color on hover */
+    text-decoration: none;
 }
+
 .post-preview > a > .post-title {
-  font-size: 1.875rem;
-  margin-top: 1.875rem;
-  margin-bottom: 0.625rem;
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
 }
+
 .post-preview > a > .post-subtitle {
-  font-weight: 300;
-  margin-bottom: 0.625rem;
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 0.25rem;
 }
+
 .post-preview > .post-meta {
-  font-size: 1.125rem;
-  font-style: italic;
-  margin-top: 0;
-  color: #6c757d;
+    font-size: 1rem;
+    /*font-style: italic;*/
+    margin-top: 0.25rem;
+    color: #6c757d;
 }
+
 .post-preview > .post-meta > a {
-  text-decoration: none;
+    text-decoration: none;
 }
+
+
 @media (min-width: 992px) {
-  .post-preview > a > .post-title {
-    font-size: 2.25rem;
-  }
+    .post-preview > a > .post-title {
+        font-size: 1.75rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .post-preview > a > .post-subtitle {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .post-preview > .post-meta {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
 }
+
