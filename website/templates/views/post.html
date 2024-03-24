@@ -7,7 +7,7 @@
 
 <!-- Page Header-->
 <div class="container">
-<header class="masthead" style="background-image: url('{{post.img_url}}');  background-size: cover; background-position: center;">
+<header class="masthead" style="background-image: url('{{post.img_url}}')">
   <div class="container position-relative px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
@@ -35,7 +35,11 @@
   <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
+          <table class="table table-hover">
+              <tr><td>
         {{ post.body|safe }}
+              </td></tr>
+          </table>
         <!--Only show Edit Post button if user is logged in -->
         {% if current_user.is_authenticated and post.author_id == current_user.id %}
         <div class="d-flex justify-content-end mb-4">
@@ -54,27 +58,33 @@
         {{ render_form(form) }}
 
         <div class="comment">
-            <ul class="commentList">
+            <table class="table table-hover">
+                <ul class="commentList">
                 {% for comment in post.comments %}
-                <li class="commentItem">
-                    <div class="commentHeader">
-                    <img src="{{ comment.comment_author.avatar(36) }}" />
-        </div>
-            <div class="commentContent">
-                <div class="authorInfo">
-                    <a class="user_popup" :w
-                        href="{{ url_for('views.myprofile', name=comment.comment_author.name) }}">
-                        <span class="authorName">{{ comment.comment_author.name }}</span>
-                    </a>
-                    {% if comment.comment_author.email == current_user.email %}
-                    <a href="{{ url_for('views.delete_comment', comment_id=comment.id, post_id=post.id) }}" class="deleteCommentBtn">✘</a>
-                    {% endif %}
-                </div>
-                <div class="commentText">{{ comment.text|safe }}</div>
-                </div>
-                </li>
+                    <tr>
+                        <td width="36px">
+                            <li class="commentItem">
+                                <div class="commentHeader">
+                                    <img src="{{ comment.comment_author.avatar(36) }}" />
+                                </div>
+                                <div class="commentContent">
+                                <div class="authorInfo">
+                                    <a class="user_popup" :w
+                                    href="{{ url_for('views.myprofile', name=comment.comment_author.name) }}">
+                                    <span class="authorName">{{ comment.comment_author.name }}</span>
+                                    </a>
+                                {% if comment.comment_author.email == current_user.email %}
+                                    <a href="{{ url_for('views.delete_comment', comment_id=comment.id, post_id=post.id) }}" class="deleteCommentBtn">✘</a>
+                                {% endif %}
+                                </div>
+                                <div class="commentText">{{ comment.text|safe }}</div>
+                                </div>
+                            </li>
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
+                </ul>
+            </table>
         </div>
       </div>
     </div>
