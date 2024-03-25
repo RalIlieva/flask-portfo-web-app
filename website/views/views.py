@@ -14,7 +14,7 @@ def before_request():
         g.search_form = SearchForm()
 
 @views.route('/', methods=['GET', 'POST'])
-def home():
+def about():
     return render_template('index.html', current_user=current_user)
 
 
@@ -102,7 +102,7 @@ def explore():
                            next_url=next_url, prev_url=prev_url)
 
 
-@views.route('/blog', methods=['GET', 'POST'])
+@views.route('/home', methods=['GET', 'POST'])
 @login_required
 def blog_all_posts():
     page = request.args.get('page', 1, type=int)
