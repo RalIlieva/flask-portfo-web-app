@@ -49,7 +49,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('views.home'))
+    return redirect(url_for('views.about'))
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -128,7 +128,7 @@ def change_password():
 @auth.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.about'))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         user = db.session.scalar(db.select(UserDB).where(UserDB.email == form.email.data))
@@ -142,10 +142,10 @@ def reset_password_request():
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.about'))
     user = UserDB.verify_reset_password_token(token)
     if not user:
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.about'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)

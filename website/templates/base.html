@@ -4,6 +4,7 @@
 {{ bootstrap.load_css() }}
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>{% block title %}Title{% endblock %}</title>
 </head>
@@ -21,9 +22,9 @@
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <li><a href="{{ url_for('views.about') }}" class="nav-link px-2 link-secondary">About</a></li>
-        <li><a href="{{ url_for('views.explore') }}" class="nav-link px-2">Explore</a></li>
-        {% if current_user.is_authenticated %}
         <li><a href="{{ url_for('views.blog_all_posts') }}" class="nav-link px-2">Home</a></li>
+                {% if current_user.is_authenticated %}
+        <li><a href="{{ url_for('views.explore') }}" class="nav-link px-2">Explore</a></li>
             {% if g.search_form %}
             <form class="navbar-form navbar-left" method="get" action="{{ url_for('views.search') }}">
                 <div class="form-group">

@@ -25,7 +25,7 @@ def myprofile(name):
     if not user:
         # Handle case where user with given name doesn't exist
         flash('User not found!', category='error')
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.about'))
     form = NoteForm()
     if form.validate_on_submit():
         data = form.note.data

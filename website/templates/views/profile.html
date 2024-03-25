@@ -5,10 +5,10 @@
 {% block body_content %}
 <div class="container marketing">
     {% if current_user.is_authenticated and current_user.id == user.id %}
-     <h1 align="center" class="fw-normal">Hello {{ current_user.name }}</h1>
+     <h1 align="center">Hello {{ current_user.name }}</h1>
      <br>
     {% else %}
-     <h1 align="center" class="fw-normal">Your are viewing {{ user.name }}'s profile</h1>
+     <h1 align="center">Your are viewing {{ user.name }}'s profile</h1>
      <br>
       {% endif %}
 <div class="container">
