@@ -3,11 +3,11 @@
 {% block title %}Search{% endblock%}
 
 {% block body_content %}
-        <div class="container">
- <h1>Search Results</h1>
-    {% for post in posts %}
-        {% include '_post.html' %}
-    {% endfor %}
+<div class="container">
+    <h1>Search Results</h1>
+        {% for post in posts %}
+            {% include '_post.html' %}
+        {% endfor %}
     <nav aria-label="Post navigation">
         <ul class="pagination">
             <li class="page-item{% if not prev_url %} disabled{% endif %}">
@@ -22,5 +22,5 @@
             </li>
         </ul>
     </nav>
-    </div>
+</div>
 {% endblock %}

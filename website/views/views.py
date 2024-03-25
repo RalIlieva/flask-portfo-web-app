@@ -14,7 +14,7 @@ def before_request():
         g.search_form = SearchForm()
 
 @views.route('/', methods=['GET', 'POST'])
-def home():
+def about():
     return render_template('index.html', current_user=current_user)
 
 
@@ -25,7 +25,7 @@ def myprofile(name):
     if not user:
         # Handle case where user with given name doesn't exist
         flash('User not found!', category='error')
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.about'))
     form = NoteForm()
     if form.validate_on_submit():
         data = form.note.data
@@ -102,7 +102,7 @@ def explore():
                            next_url=next_url, prev_url=prev_url)
 
 
-@views.route('/blog', methods=['GET', 'POST'])
+@views.route('/home', methods=['GET', 'POST'])
 @login_required
 def blog_all_posts():
     page = request.args.get('page', 1, type=int)
