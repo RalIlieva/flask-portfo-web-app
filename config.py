@@ -18,4 +18,6 @@ class Config:
     MAIL_AUTH_METHOD = 'PLAIN'  # Use PLAIN authentication
     ADMINS = ['pthntstngml@gmail.com']
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+    if not ELASTICSEARCH_URL:
+        ELASTICSEARCH_URL = os.environ.get('LOCAL_ELASTICSEARCH_URL', 'http://localhost:9200')
     POSTS_PER_PAGE = 4
